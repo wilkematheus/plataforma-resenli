@@ -300,5 +300,179 @@
         </article>
       </section>
     </main>
+
+    <main id="pesquisar">
+      <section aria-labelledby="titulo-pesquisa">
+        <p>Explore sua próxima leitura</p>
+        <h1 id="titulo-pesquisa">Qual história você procura?</h1>
+
+        <form action="#resultados-pesquisa" method="get" role="search">
+          <label for="campo-pesquisa">Pesquisar livros</label>
+
+          <input
+            id="campo-pesquisa"
+            name="busca"
+            type="search"
+            placeholder="Busque por título, autor ou gênero..."
+          >
+
+          <button type="submit">Pesquisar</button>
+        </form>
+
+        <nav aria-label="Buscas populares">
+          <span>Buscas populares:</span>
+          <a href="?busca=romance-brasileiro#resultados-pesquisa">
+            Romance brasileiro
+          </a>
+          <a href="?busca=fantasia#resultados-pesquisa">Fantasia</a>
+          <a href="?busca=nao-ficcao#resultados-pesquisa">Não ficção</a>
+          <a href="?busca=classicos#resultados-pesquisa">Clássicos</a>
+        </nav>
+      </section>
+
+      <section id="resultados-pesquisa" aria-labelledby="titulo-resultados">
+        <header>
+          <p>Curadoria Resenli</p>
+          <h2 id="titulo-resultados">Livros para descobrir</h2>
+        </header>
+
+        <ul>
+          <li>
+            <article>
+              <figure>
+                <div role="img" aria-label="Capa do livro Torto Arado">
+                  <strong>Torto Arado</strong>
+                  <small>Itamar Vieira Junior</small>
+                </div>
+              </figure>
+
+              <div>
+                <p aria-label="Avaliação média: 4,8 de 5 estrelas">
+                  ★★★★★ 4,8
+                </p>
+                <h3>Torto Arado</h3>
+                <p>Itamar Vieira Junior</p>
+                <small>2019 · 12,4 mil avaliações</small>
+              </div>
+
+              <button type="button">Adicionar à minha lista</button>
+            </article>
+          </li>
+
+          <li>
+            <article>
+              <figure>
+                <div role="img" aria-label="Capa do livro Tudo é Rio">
+                  <strong>Tudo é Rio</strong>
+                  <small>Carla Madeira</small>
+                </div>
+              </figure>
+
+              <div>
+                <p aria-label="Avaliação média: 4,7 de 5 estrelas">
+                  ★★★★★ 4,7
+                </p>
+                <h3>Tudo é Rio</h3>
+                <p>Carla Madeira</p>
+                <small>2014 · 9,8 mil avaliações</small>
+              </div>
+
+              <button type="button">Adicionar à minha lista</button>
+            </article>
+          </li>
+
+          <li>
+            <article>
+              <figure>
+                <div
+                  role="img"
+                  aria-label="Capa do livro A Vida Invisível de Addie LaRue"
+                >
+                  <strong>A Vida Invisível de Addie LaRue</strong>
+                  <small>V. E. Schwab</small>
+                </div>
+              </figure>
+
+              <div>
+                <p aria-label="Avaliação média: 4,6 de 5 estrelas">
+                  ★★★★★ 4,6
+                </p>
+                <h3>A Vida Invisível de Addie LaRue</h3>
+                <p>V. E. Schwab</p>
+                <small>2020 · 18,2 mil avaliações</small>
+              </div>
+
+              <button type="button">Adicionar à minha lista</button>
+            </article>
+          </li>
+
+          <li>
+            <article>
+              <figure>
+                <div role="img" aria-label="Capa do livro Quarto de Despejo">
+                  <strong>Quarto de Despejo</strong>
+                  <small>Carolina Maria de Jesus</small>
+                </div>
+              </figure>
+
+              <div>
+                <p aria-label="Avaliação média: 4,9 de 5 estrelas">
+                  ★★★★★ 4,9
+                </p>
+                <h3>Quarto de Despejo</h3>
+                <p>Carolina Maria de Jesus</p>
+                <small>1960 · 14,1 mil avaliações</small>
+              </div>
+
+              <button type="button">Adicionar à minha lista</button>
+            </article>
+          </li>
+
+          <li>
+            <article>
+              <figure>
+                <div role="img" aria-label="Capa do livro O Avesso da Pele">
+                  <strong>O Avesso da Pele</strong>
+                  <small>Jeferson Tenório</small>
+                </div>
+              </figure>
+
+              <div>
+                <p aria-label="Avaliação média: 4,8 de 5 estrelas">
+                  ★★★★★ 4,8
+                </p>
+                <h3>O Avesso da Pele</h3>
+                <p>Jeferson Tenório</p>
+                <small>2020 · 7,5 mil avaliações</small>
+              </div>
+
+              <button type="button">Adicionar à minha lista</button>
+            </article>
+          </li>
+
+          <li>
+            <article>
+              <figure>
+                <div role="img" aria-label="Capa do livro Cem Anos de Solidão">
+                  <strong>Cem Anos de Solidão</strong>
+                  <small>Gabriel García Márquez</small>
+                </div>
+              </figure>
+
+              <div>
+                <p aria-label="Avaliação média: 4,9 de 5 estrelas">
+                  ★★★★★ 4,9
+                </p>
+                <h3>Cem Anos de Solidão</h3>
+                <p>Gabriel García Márquez</p>
+                <small>1967 · 25,7 mil avaliações</small>
+              </div>
+
+              <button type="button">Adicionar à minha lista</button>
+            </article>
+          </li>
+        </ul>
+      </section>
+    </main>
 </body>
 </html>
