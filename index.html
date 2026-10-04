@@ -3,9 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resenli</title>
+    <title>Resenli - Resenhas de livros</title>
 </head>
 <body>
-    
+    <main id="criar-conta">
+    <header>
+      <a href="#criar-conta" aria-label="Página inicial do Resenli">
+        <strong>Resenli.</strong>
+      </a>
+    </header>
+
+    <section aria-labelledby="titulo-criar-conta">
+      <p>Sua próxima história começa aqui</p>
+
+      <h1 id="titulo-criar-conta">
+        Livros ficam melhores quando compartilhados.
+      </h1>
+
+      <p>
+        Descubra novas leituras, compartilhe suas impressões e encontre pessoas
+        que sentem histórias como você.
+      </p>
+
+      <form action="#inicio" method="get">
+        <div>
+          <label for="nome">Como podemos te chamar?</label>
+          <input
+            id="nome"
+            name="nome"
+            type="text"
+            placeholder="Seu nome"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="email-cadastro">Seu e-mail</label>
+          <input
+            id="email-cadastro"
+            name="email"
+            type="email"
+            placeholder="voce@email.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="senha-cadastro">Sua senha</label>
+          <input
+            id="senha-cadastro"
+            name="senha"
+            type="password"
+            placeholder="No mínimo 6 caracteres"
+            minlength="6"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+
+        <button type="submit">Criar minha conta</button>
+      </form>
+
+      <p>
+        Já faz parte do Resenli?
+        <a href="#entrar">Entrar</a>
+      </p>
+
+      <small>
+        Ao continuar, você concorda com nossos Termos de Uso e Política de
+        Privacidade.
+      </small>
+    </section>
+
+    <aside>
+      <figure>
+        <img
+          src="https://images.unsplash.com/photo-1635891714190-4f4ad45f46ce?auto=format&fit=crop&w=1400&q=85"
+          alt="Poltrona acolhedora próxima a uma estante de livros"
+        >
+
+        <blockquote>
+          <p>“Um leitor vive mil vidas antes de morrer.”</p>
+          <cite>George R. R. Martin</cite>
+        </blockquote>
+
+        <figcaption>
+          Foto por Robin Jonathan Deutsch no Unsplash
+        </figcaption>
+      </figure>
+    </aside>
+  </main>
+
+  <main id="entrar">
+    <header>
+      <a href="#criar-conta" aria-label="Página inicial do Resenli">
+        <strong>Resenli.</strong>
+      </a>
+    </header>
+
+    <section aria-labelledby="titulo-login">
+      <p>Sua estante está esperando</p>
+      <h1 id="titulo-login">Que bom ter você de volta.</h1>
+
+      <p>
+        Entre para continuar suas leituras, listas e conversas.
+      </p>
+
+      <form action="#inicio" method="get">
+        <div>
+          <label for="email-login">Seu e-mail</label>
+          <input
+            id="email-login"
+            name="email"
+            type="email"
+            placeholder="voce@email.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="senha-login">Sua senha</label>
+          <input
+            id="senha-login"
+            name="senha"
+            type="password"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button type="submit">Entrar no Resenli</button>
+      </form>
+
+      <p>
+        Ainda não tem uma conta?
+        <a href="#criar-conta">Criar conta</a>
+      </p>
+    </section>
+  </main>
 </body>
 </html>
