@@ -673,5 +673,89 @@
         </article>
       </section>
     </main>
+
+    <main id="nova-resenha">
+      <section aria-labelledby="titulo-nova-resenha">
+        <header>
+          <div>
+            <p>Compartilhe sua leitura</p>
+            <h1 id="titulo-nova-resenha">Nova resenha</h1>
+          </div>
+
+          <a href="#inicio" aria-label="Fechar formulário">Fechar</a>
+        </header>
+
+        <form action="#minhas-avaliacoes" method="post">
+          <div>
+            <label for="livro-avaliado">Qual livro você leu?</label>
+
+            <select id="livro-avaliado" name="livro" required>
+              <option value="">Selecione um livro</option>
+              <option value="torto-arado">Torto Arado</option>
+              <option value="tudo-e-rio">Tudo é Rio</option>
+              <option value="addie-larue">
+                A Vida Invisível de Addie LaRue
+              </option>
+              <option value="quarto-de-despejo">
+                Quarto de Despejo
+              </option>
+              <option value="avesso-da-pele">O Avesso da Pele</option>
+              <option value="cem-anos-de-solidao">
+                Cem Anos de Solidão
+              </option>
+            </select>
+          </div>
+
+          <fieldset>
+            <legend>Como foi sua experiência?</legend>
+
+            <label>
+              <input type="radio" name="nota" value="1" required>
+              1 estrela
+            </label>
+
+            <label>
+              <input type="radio" name="nota" value="2">
+              2 estrelas
+            </label>
+
+            <label>
+              <input type="radio" name="nota" value="3">
+              3 estrelas
+            </label>
+
+            <label>
+              <input type="radio" name="nota" value="4">
+              4 estrelas
+            </label>
+
+            <label>
+              <input type="radio" name="nota" value="5">
+              5 estrelas
+            </label>
+          </fieldset>
+
+          <div>
+            <label for="comentario-resenha">Conte um pouco mais</label>
+
+            <textarea
+              id="comentario-resenha"
+              name="comentario"
+              rows="7"
+              maxlength="420"
+              placeholder="O que te atravessou nessa leitura?"
+              required
+            ></textarea>
+
+            <small>Máximo de 420 caracteres</small>
+          </div>
+
+          <div>
+            <a href="#inicio">Cancelar</a>
+            <button type="submit">Publicar resenha</button>
+          </div>
+        </form>
+      </section>
+    </main>
 </body>
 </html>
