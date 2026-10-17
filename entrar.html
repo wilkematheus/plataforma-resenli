@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar | Resenli</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body class="pagina-auth">
+    <main class="auth">
+      <section class="auth-lado-form" aria-labelledby="titulo-login">
+        <header class="auth-topo">
+          <a class="logo" href="index.html" aria-label="Página inicial do Resenli">
+            <span class="logo-marca" aria-hidden="true">R</span>
+            <strong class="logo-nome">resenli.</strong>
+          </a>
+        </header>
+
+        <div class="auth-conteudo">
+          <p class="sobretitulo">Sua estante está esperando</p>
+          <h1 id="titulo-login" class="titulo-grande">Que bom ter você de volta.</h1>
+          <p class="texto-apoio">Entre para continuar suas leituras, listas e conversas.</p>
+
+          <form class="formulario" action="inicio.html" method="get">
+            <div class="campo">
+              <label class="campo-rotulo" for="email-login">Seu e-mail</label>
+              <input
+                class="campo-entrada"
+                id="email-login"
+                name="email"
+                type="email"
+                placeholder="voce@email.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <div class="campo">
+              <label class="campo-rotulo" for="senha-login">Sua senha</label>
+              <input
+                class="campo-entrada"
+                id="senha-login"
+                name="senha"
+                type="password"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+            <button class="botao botao-primario botao-largo" type="submit">Entrar no Resenli →</button>
+          </form>
+
+          <p class="auth-troca">
+            Ainda não tem uma conta?
+            <a class="link-forte" href="index.html">Criar conta</a>
+          </p>
+        </div>
+
+        <small class="auth-termos">
+          Ao continuar, você concorda com nossos Termos de Uso e Política de Privacidade.
+        </small>
+      </section>
+
+      <aside class="auth-imagem">
+        <figure class="auth-figura">
+          <img
+            class="auth-foto"
+            src="https://images.unsplash.com/photo-1635891714190-4f4ad45f46ce?auto=format&fit=crop&w=1400&q=85"
+            alt="Poltrona acolhedora próxima a uma estante de livros"
+          />
+          <blockquote class="auth-citacao">
+            <p>“Um leitor vive mil vidas antes de morrer.”</p>
+            <cite class="auth-autor">George R. R. Martin</cite>
+          </blockquote>
+          <figcaption class="auth-credito">Foto por Robin Jonathan Deutsch no Unsplash</figcaption>
+        </figure>
+      </aside>
+    </main>
+  </body>
+</html>

@@ -1,793 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resenli - Resenhas de livros</title>
-</head>
-<body>
-    <main id="criar-conta">
-    <header>
-      <a href="#criar-conta" aria-label="Página inicial do Resenli">
-        <strong>Resenli.</strong>
-      </a>
-    </header>
-
-    <section aria-labelledby="titulo-criar-conta">
-      <p>Sua próxima história começa aqui</p>
-
-      <h1 id="titulo-criar-conta">
-        Livros ficam melhores quando compartilhados.
-      </h1>
-
-      <p>
-        Descubra novas leituras, compartilhe suas impressões e encontre pessoas
-        que sentem histórias como você.
-      </p>
-
-      <form action="#inicio" method="get">
-        <div>
-          <label for="nome">Como podemos te chamar?</label>
-          <input
-            id="nome"
-            name="nome"
-            type="text"
-            placeholder="Seu nome"
-            autocomplete="name"
-            required
-          >
-        </div>
-
-        <div>
-          <label for="email-cadastro">Seu e-mail</label>
-          <input
-            id="email-cadastro"
-            name="email"
-            type="email"
-            placeholder="voce@email.com"
-            autocomplete="email"
-            required
-          >
-        </div>
-
-        <div>
-          <label for="senha-cadastro">Sua senha</label>
-          <input
-            id="senha-cadastro"
-            name="senha"
-            type="password"
-            placeholder="No mínimo 6 caracteres"
-            minlength="6"
-            autocomplete="new-password"
-            required
-          >
-        </div>
-
-        <button type="submit">Criar minha conta</button>
-      </form>
-
-      <p>
-        Já faz parte do Resenli?
-        <a href="#entrar">Entrar</a>
-      </p>
-
-      <small>
-        Ao continuar, você concorda com nossos Termos de Uso e Política de
-        Privacidade.
-      </small>
-    </section>
-
-    <aside>
-      <figure>
-        <img
-          src="https://images.unsplash.com/photo-1635891714190-4f4ad45f46ce?auto=format&fit=crop&w=1400&q=85"
-          alt="Poltrona acolhedora próxima a uma estante de livros"
-        >
-
-        <blockquote>
-          <p>“Um leitor vive mil vidas antes de morrer.”</p>
-          <cite>George R. R. Martin</cite>
-        </blockquote>
-
-        <figcaption>
-          Foto por Robin Jonathan Deutsch no Unsplash
-        </figcaption>
-      </figure>
-    </aside>
-  </main>
-
-  <main id="entrar">
-    <header>
-      <a href="#criar-conta" aria-label="Página inicial do Resenli">
-        <strong>Resenli.</strong>
-      </a>
-    </header>
-
-    <section aria-labelledby="titulo-login">
-      <p>Sua estante está esperando</p>
-      <h1 id="titulo-login">Que bom ter você de volta.</h1>
-
-      <p>
-        Entre para continuar suas leituras, listas e conversas.
-      </p>
-
-      <form action="#inicio" method="get">
-        <div>
-          <label for="email-login">Seu e-mail</label>
-          <input
-            id="email-login"
-            name="email"
-            type="email"
-            placeholder="voce@email.com"
-            autocomplete="email"
-            required
-          >
-        </div>
-
-        <div>
-          <label for="senha-login">Sua senha</label>
-          <input
-            id="senha-login"
-            name="senha"
-            type="password"
-            placeholder="Digite sua senha"
-            autocomplete="current-password"
-            required
-          >
-        </div>
-
-        <button type="submit">Entrar no Resenli</button>
-      </form>
-
-      <p>
-        Ainda não tem uma conta?
-        <a href="#criar-conta">Criar conta</a>
-      </p>
-    </section>
-  </main>
-
-  <main id="inicio">
-      <section aria-labelledby="titulo-inicio">
-        <p>Terça, 12 de março</p>
-        <h1 id="titulo-inicio">Boa tarde, Matheus.</h1>
-        <p>O que a sua estante tem para contar hoje?</p>
-
-        <aside aria-label="Meta de leitura">
-          <span>Meta de leitura</span>
-          <strong>8 de 12 livros</strong>
-          <progress value="8" max="12">8 de 12 livros</progress>
-          <small>Você está indo muito bem</small>
-        </aside>
-      </section>
-
-      <section aria-labelledby="titulo-feed">
-        <header>
-          <div>
-            <p>Comunidade</p>
-            <h2 id="titulo-feed">Resenhas em destaque</h2>
-          </div>
-
-          <a href="#todas-resenhas">Ver todas</a>
-        </header>
-
-        <article>
-          <header>
-            <div aria-hidden="true">MC</div>
-
-            <div>
-              <strong>Marina Campos</strong>
-              <time datetime="2025-03-12T14:42">Há 18 minutos</time>
-            </div>
-
-            <span>Mais comentada</span>
-          </header>
-
-          <div>
-            <figure>
-              <div role="img" aria-label="Capa do livro Torto Arado">
-                <strong>Torto Arado</strong>
-                <small>Itamar Vieira Junior</small>
-              </div>
-            </figure>
-
-            <div>
-              <p aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-              <h3>Torto Arado</h3>
-              <p>Itamar Vieira Junior</p>
-
-              <blockquote>
-                Uma história que parece nascer da própria terra. Itamar escreve
-                com uma delicadeza imensa sobre pertencimento, memória e tudo
-                aquilo que herdamos sem escolher.
-              </blockquote>
-            </div>
-          </div>
-
-          <footer>
-            <button type="button" aria-label="Curtir resenha">
-              Curtir — 248
-            </button>
-
-            <a href="#comentarios-torto-arado">
-              32 comentários
-            </a>
-
-            <button type="button" aria-label="Salvar resenha">
-              Salvar
-            </button>
-          </footer>
-        </article>
-
-        <article>
-          <header>
-            <div aria-hidden="true">JP</div>
-
-            <div>
-              <strong>João Pedro</strong>
-              <time datetime="2025-03-12T14:00">Há 1 hora</time>
-            </div>
-          </header>
-
-          <div>
-            <figure>
-              <div
-                role="img"
-                aria-label="Capa do livro A Vida Invisível de Addie LaRue"
-              >
-                <strong>A Vida Invisível de Addie LaRue</strong>
-                <small>V. E. Schwab</small>
-              </div>
-            </figure>
-
-            <div>
-              <p aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</p>
-              <h3>A Vida Invisível de Addie LaRue</h3>
-              <p>V. E. Schwab</p>
-
-              <blockquote>
-                A premissa é maravilhosa e a atmosfera acompanha. Foi uma
-                leitura lenta para mim, mas daquelas que continuam voltando à
-                cabeça muitos dias depois.
-              </blockquote>
-            </div>
-          </div>
-
-          <footer>
-            <button type="button">Curtir — 186</button>
-            <a href="#comentarios-addie-larue">21 comentários</a>
-            <button type="button">Salvar</button>
-          </footer>
-        </article>
-
-        <article>
-          <header>
-            <div aria-hidden="true">CN</div>
-
-            <div>
-              <strong>Clara Nunes</strong>
-              <time datetime="2025-03-12T13:00">Há 2 horas</time>
-            </div>
-
-            <span>Em alta</span>
-          </header>
-
-          <div>
-            <figure>
-              <div role="img" aria-label="Capa do livro Quarto de Despejo">
-                <strong>Quarto de Despejo</strong>
-                <small>Carolina Maria de Jesus</small>
-              </div>
-            </figure>
-
-            <div>
-              <p aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-              <h3>Quarto de Despejo</h3>
-              <p>Carolina Maria de Jesus</p>
-
-              <blockquote>
-                Um livro indispensável. A voz de Carolina é direta, viva e
-                impossível de ignorar. Terminei querendo conversar sobre cada
-                página.
-              </blockquote>
-            </div>
-          </div>
-
-          <footer>
-            <button type="button">Curtir — 312</button>
-            <a href="#comentarios-quarto-de-despejo">47 comentários</a>
-            <button type="button">Salvar</button>
-          </footer>
-        </article>
-      </section>
-    </main>
-
-    <main id="pesquisar">
-      <section aria-labelledby="titulo-pesquisa">
-        <p>Explore sua próxima leitura</p>
-        <h1 id="titulo-pesquisa">Qual história você procura?</h1>
-
-        <form action="#resultados-pesquisa" method="get" role="search">
-          <label for="campo-pesquisa">Pesquisar livros</label>
-
-          <input
-            id="campo-pesquisa"
-            name="busca"
-            type="search"
-            placeholder="Busque por título, autor ou gênero..."
-          >
-
-          <button type="submit">Pesquisar</button>
-        </form>
-
-        <nav aria-label="Buscas populares">
-          <span>Buscas populares:</span>
-          <a href="?busca=romance-brasileiro#resultados-pesquisa">
-            Romance brasileiro
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar conta | Resenli</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body class="pagina-auth">
+    <main class="auth">
+      <section class="auth-lado-form" aria-labelledby="titulo-criar-conta">
+        <header class="auth-topo">
+          <a class="logo" href="index.html" aria-label="Página inicial do Resenli">
+            <span class="logo-marca" aria-hidden="true">R</span>
+            <strong class="logo-nome">resenli.</strong>
           </a>
-          <a href="?busca=fantasia#resultados-pesquisa">Fantasia</a>
-          <a href="?busca=nao-ficcao#resultados-pesquisa">Não ficção</a>
-          <a href="?busca=classicos#resultados-pesquisa">Clássicos</a>
-        </nav>
-      </section>
-
-      <section id="resultados-pesquisa" aria-labelledby="titulo-resultados">
-        <header>
-          <p>Curadoria Resenli</p>
-          <h2 id="titulo-resultados">Livros para descobrir</h2>
         </header>
 
-        <ul>
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Torto Arado">
-                  <strong>Torto Arado</strong>
-                  <small>Itamar Vieira Junior</small>
-                </div>
-              </figure>
+        <div class="auth-conteudo">
+          <p class="sobretitulo">Sua próxima história começa aqui</p>
+          <h1 id="titulo-criar-conta" class="titulo-grande">Livros ficam melhores quando compartilhados.</h1>
+          <p class="texto-apoio">
+            Descubra novas leituras, compartilhe suas impressões e encontre pessoas que sentem histórias como você.
+          </p>
 
-              <div>
-                <p aria-label="Avaliação média: 4,8 de 5 estrelas">
-                  ★★★★★ 4,8
-                </p>
-                <h3>Torto Arado</h3>
-                <p>Itamar Vieira Junior</p>
-                <small>2019 · 12,4 mil avaliações</small>
-              </div>
+          <form class="formulario" action="inicio.html" method="get">
+            <div class="campo">
+              <label class="campo-rotulo" for="nome">Como podemos te chamar?</label>
+              <input
+                class="campo-entrada"
+                id="nome"
+                name="nome"
+                type="text"
+                placeholder="Seu nome"
+                autocomplete="name"
+                required
+              />
+            </div>
+            <div class="campo">
+              <label class="campo-rotulo" for="email-cadastro">Seu e-mail</label>
+              <input
+                class="campo-entrada"
+                id="email-cadastro"
+                name="email"
+                type="email"
+                placeholder="voce@email.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <div class="campo">
+              <label class="campo-rotulo" for="senha-cadastro">Sua senha</label>
+              <input
+                class="campo-entrada"
+                id="senha-cadastro"
+                name="senha"
+                type="password"
+                placeholder="No mínimo 6 caracteres"
+                autocomplete="new-password"
+                minlength="6"
+                required
+              />
+            </div>
+            <button class="botao botao-primario botao-largo" type="submit">Criar minha conta →</button>
+          </form>
 
-              <button type="button">Adicionar à minha lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Tudo é Rio">
-                  <strong>Tudo é Rio</strong>
-                  <small>Carla Madeira</small>
-                </div>
-              </figure>
-
-              <div>
-                <p aria-label="Avaliação média: 4,7 de 5 estrelas">
-                  ★★★★★ 4,7
-                </p>
-                <h3>Tudo é Rio</h3>
-                <p>Carla Madeira</p>
-                <small>2014 · 9,8 mil avaliações</small>
-              </div>
-
-              <button type="button">Adicionar à minha lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div
-                  role="img"
-                  aria-label="Capa do livro A Vida Invisível de Addie LaRue"
-                >
-                  <strong>A Vida Invisível de Addie LaRue</strong>
-                  <small>V. E. Schwab</small>
-                </div>
-              </figure>
-
-              <div>
-                <p aria-label="Avaliação média: 4,6 de 5 estrelas">
-                  ★★★★★ 4,6
-                </p>
-                <h3>A Vida Invisível de Addie LaRue</h3>
-                <p>V. E. Schwab</p>
-                <small>2020 · 18,2 mil avaliações</small>
-              </div>
-
-              <button type="button">Adicionar à minha lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Quarto de Despejo">
-                  <strong>Quarto de Despejo</strong>
-                  <small>Carolina Maria de Jesus</small>
-                </div>
-              </figure>
-
-              <div>
-                <p aria-label="Avaliação média: 4,9 de 5 estrelas">
-                  ★★★★★ 4,9
-                </p>
-                <h3>Quarto de Despejo</h3>
-                <p>Carolina Maria de Jesus</p>
-                <small>1960 · 14,1 mil avaliações</small>
-              </div>
-
-              <button type="button">Adicionar à minha lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro O Avesso da Pele">
-                  <strong>O Avesso da Pele</strong>
-                  <small>Jeferson Tenório</small>
-                </div>
-              </figure>
-
-              <div>
-                <p aria-label="Avaliação média: 4,8 de 5 estrelas">
-                  ★★★★★ 4,8
-                </p>
-                <h3>O Avesso da Pele</h3>
-                <p>Jeferson Tenório</p>
-                <small>2020 · 7,5 mil avaliações</small>
-              </div>
-
-              <button type="button">Adicionar à minha lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Cem Anos de Solidão">
-                  <strong>Cem Anos de Solidão</strong>
-                  <small>Gabriel García Márquez</small>
-                </div>
-              </figure>
-
-              <div>
-                <p aria-label="Avaliação média: 4,9 de 5 estrelas">
-                  ★★★★★ 4,9
-                </p>
-                <h3>Cem Anos de Solidão</h3>
-                <p>Gabriel García Márquez</p>
-                <small>1967 · 25,7 mil avaliações</small>
-              </div>
-
-              <button type="button">Adicionar à minha lista</button>
-            </article>
-          </li>
-        </ul>
-      </section>
-    </main>
-
-    <main id="minha-lista">
-      <header>
-        <p>Sua estante particular</p>
-        <h1>Minha lista</h1>
-        <p>Histórias que você guardou para ler no momento certo.</p>
-      </header>
-
-      <section aria-label="Resumo da lista">
-        <strong>4</strong>
-        <span>livros para ler</span>
-        <p><strong>1.864</strong> páginas esperando por você</p>
-      </section>
-
-      <section aria-labelledby="titulo-livros-salvos">
-        <h2 id="titulo-livros-salvos">Livros salvos</h2>
-
-        <ol>
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Torto Arado">
-                  <strong>Torto Arado</strong>
-                  <small>Itamar Vieira Junior</small>
-                </div>
-              </figure>
-
-              <div>
-                <span>Literatura brasileira</span>
-                <h3>Torto Arado</h3>
-                <p>Itamar Vieira Junior</p>
-                <p aria-label="Avaliação média: 4,8 de 5 estrelas">
-                  ★★★★★ 4,8
-                </p>
-                <a href="#livro-torto-arado">Começar a ler</a>
-              </div>
-
-              <button type="button">Remover da lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Tudo é Rio">
-                  <strong>Tudo é Rio</strong>
-                  <small>Carla Madeira</small>
-                </div>
-              </figure>
-
-              <div>
-                <span>Literatura brasileira</span>
-                <h3>Tudo é Rio</h3>
-                <p>Carla Madeira</p>
-                <p aria-label="Avaliação média: 4,7 de 5 estrelas">
-                  ★★★★★ 4,7
-                </p>
-                <a href="#livro-tudo-e-rio">Começar a ler</a>
-              </div>
-
-              <button type="button">Remover da lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Quarto de Despejo">
-                  <strong>Quarto de Despejo</strong>
-                  <small>Carolina Maria de Jesus</small>
-                </div>
-              </figure>
-
-              <div>
-                <span>Literatura brasileira</span>
-                <h3>Quarto de Despejo</h3>
-                <p>Carolina Maria de Jesus</p>
-                <p aria-label="Avaliação média: 4,9 de 5 estrelas">
-                  ★★★★★ 4,9
-                </p>
-                <a href="#livro-quarto-de-despejo">Começar a ler</a>
-              </div>
-
-              <button type="button">Remover da lista</button>
-            </article>
-          </li>
-
-          <li>
-            <article>
-              <figure>
-                <div role="img" aria-label="Capa do livro Cem Anos de Solidão">
-                  <strong>Cem Anos de Solidão</strong>
-                  <small>Gabriel García Márquez</small>
-                </div>
-              </figure>
-
-              <div>
-                <span>Literatura estrangeira</span>
-                <h3>Cem Anos de Solidão</h3>
-                <p>Gabriel García Márquez</p>
-                <p aria-label="Avaliação média: 4,9 de 5 estrelas">
-                  ★★★★★ 4,9
-                </p>
-                <a href="#livro-cem-anos-de-solidao">Começar a ler</a>
-              </div>
-
-              <button type="button">Remover da lista</button>
-            </article>
-          </li>
-        </ol>
-      </section>
-    </main>
-
-    <main id="minhas-avaliacoes">
-      <header>
-        <div>
-          <p>Seu diário de leitura</p>
-          <h1>Minhas avaliações</h1>
-          <p>
-            As histórias que passaram por você e o que ficou de cada uma.
+          <p class="auth-troca">
+            Já faz parte do Resenli?
+            <a class="link-forte" href="entrar.html">Entrar</a>
           </p>
         </div>
 
-        <a href="#nova-resenha">Avaliar um livro</a>
-      </header>
-
-      <section aria-label="Estatísticas de leitura">
-        <dl>
-          <div>
-            <dt>Livros avaliados</dt>
-            <dd>8</dd>
-          </div>
-
-          <div>
-            <dt>Sua média</dt>
-            <dd>4,6</dd>
-          </div>
-
-          <div>
-            <dt>Ano mais lido</dt>
-            <dd>2024</dd>
-          </div>
-        </dl>
+        <small class="auth-termos">
+          Ao continuar, você concorda com nossos Termos de Uso e Política de Privacidade.
+        </small>
       </section>
 
-      <section aria-labelledby="titulo-historico-avaliacoes">
-        <h2 id="titulo-historico-avaliacoes">Histórico de avaliações</h2>
-
-        <article>
-          <figure>
-            <div role="img" aria-label="Capa do livro Torto Arado">
-              <strong>Torto Arado</strong>
-              <small>Itamar Vieira Junior</small>
-            </div>
-          </figure>
-
-          <div>
-            <time datetime="2025-03-12">Avaliado em 12 de março de 2025</time>
-            <h3>Torto Arado</h3>
-            <p>Itamar Vieira Junior</p>
-            <p aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-
-            <blockquote>
-              Uma história que parece nascer da própria terra. Itamar escreve
-              com uma delicadeza imensa sobre pertencimento, memória e tudo
-              aquilo que herdamos sem escolher.
-            </blockquote>
-
-            <a href="#editar-avaliacao-torto-arado">Editar avaliação</a>
-          </div>
-        </article>
-
-        <article>
-          <figure>
-            <div role="img" aria-label="Capa do livro Quarto de Despejo">
-              <strong>Quarto de Despejo</strong>
-              <small>Carolina Maria de Jesus</small>
-            </div>
-          </figure>
-
-          <div>
-            <time datetime="2025-02-20">Avaliado em 20 de fevereiro de 2025</time>
-            <h3>Quarto de Despejo</h3>
-            <p>Carolina Maria de Jesus</p>
-            <p aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-
-            <blockquote>
-              Um livro indispensável. A voz de Carolina é direta, viva e
-              impossível de ignorar. Terminei querendo conversar sobre cada
-              página.
-            </blockquote>
-
-            <a href="#editar-avaliacao-quarto-de-despejo">
-              Editar avaliação
-            </a>
-          </div>
-        </article>
-      </section>
+      <aside class="auth-imagem">
+        <figure class="auth-figura">
+          <img
+            class="auth-foto"
+            src="https://images.unsplash.com/photo-1635891714190-4f4ad45f46ce?auto=format&fit=crop&w=1400&q=85"
+            alt="Poltrona acolhedora próxima a uma estante de livros"
+          />
+          <blockquote class="auth-citacao">
+            <p>“Um leitor vive mil vidas antes de morrer.”</p>
+            <cite class="auth-autor">George R. R. Martin</cite>
+          </blockquote>
+          <figcaption class="auth-credito">Foto por Robin Jonathan Deutsch no Unsplash</figcaption>
+        </figure>
+      </aside>
     </main>
-
-    <main id="nova-resenha">
-      <section aria-labelledby="titulo-nova-resenha">
-        <header>
-          <div>
-            <p>Compartilhe sua leitura</p>
-            <h1 id="titulo-nova-resenha">Nova resenha</h1>
-          </div>
-
-          <a href="#inicio" aria-label="Fechar formulário">Fechar</a>
-        </header>
-
-        <form action="#minhas-avaliacoes" method="post">
-          <div>
-            <label for="livro-avaliado">Qual livro você leu?</label>
-
-            <select id="livro-avaliado" name="livro" required>
-              <option value="">Selecione um livro</option>
-              <option value="torto-arado">Torto Arado</option>
-              <option value="tudo-e-rio">Tudo é Rio</option>
-              <option value="addie-larue">
-                A Vida Invisível de Addie LaRue
-              </option>
-              <option value="quarto-de-despejo">
-                Quarto de Despejo
-              </option>
-              <option value="avesso-da-pele">O Avesso da Pele</option>
-              <option value="cem-anos-de-solidao">
-                Cem Anos de Solidão
-              </option>
-            </select>
-          </div>
-
-          <fieldset>
-            <legend>Como foi sua experiência?</legend>
-
-            <label>
-              <input type="radio" name="nota" value="1" required>
-              1 estrela
-            </label>
-
-            <label>
-              <input type="radio" name="nota" value="2">
-              2 estrelas
-            </label>
-
-            <label>
-              <input type="radio" name="nota" value="3">
-              3 estrelas
-            </label>
-
-            <label>
-              <input type="radio" name="nota" value="4">
-              4 estrelas
-            </label>
-
-            <label>
-              <input type="radio" name="nota" value="5">
-              5 estrelas
-            </label>
-          </fieldset>
-
-          <div>
-            <label for="comentario-resenha">Conte um pouco mais</label>
-
-            <textarea
-              id="comentario-resenha"
-              name="comentario"
-              rows="7"
-              maxlength="420"
-              placeholder="O que te atravessou nessa leitura?"
-              required
-            ></textarea>
-
-            <small>Máximo de 420 caracteres</small>
-          </div>
-
-          <div>
-            <a href="#inicio">Cancelar</a>
-            <button type="submit">Publicar resenha</button>
-          </div>
-        </form>
-      </section>
-    </main>
-
-    <aside id="perfil">
-      <header>
-        <div aria-hidden="true">MW</div>
-        <h2>Matheus Wilke</h2>
-        <p>@wilkematheus</p>
-      </header>
-
-      <dl>
-        <div>
-          <dt>Livros avaliados</dt>
-          <dd>8</dd>
-        </div>
-
-        <div>
-          <dt>Livros na lista</dt>
-          <dd>4</dd>
-        </div>
-
-        <div>
-          <dt>Seguidores</dt>
-          <dd>128</dd>
-        </div>
-      </dl>
-
-      <nav aria-label="Opções do perfil">
-        <a href="#editar-perfil">Editar perfil</a>
-        <a href="#configuracoes">Configurações</a>
-        <a href="#entrar">Sair da conta</a>
-      </nav>
-    </aside>
-  </div>
-</body>
+  </body>
 </html>
