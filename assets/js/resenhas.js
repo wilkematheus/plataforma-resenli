@@ -43,6 +43,22 @@ let resenhas = [
   },
 ];
 
+// Livros que podem ser escolhidos no formulário (mesmos da página Nova resenha)
+const livros = [
+  { id: "torto-arado", titulo: "Torto Arado", autor: "Itamar Vieira Junior", capa: "capa-1" },
+  { id: "tudo-e-rio", titulo: "Tudo é Rio", autor: "Carla Madeira", capa: "capa-2" },
+  { id: "addie-larue", titulo: "A Vida Invisível de Addie LaRue", autor: "V. E. Schwab", capa: "capa-3" },
+  { id: "quarto-de-despejo", titulo: "Quarto de Despejo", autor: "Carolina Maria de Jesus", capa: "capa-4" },
+  { id: "avesso-da-pele", titulo: "O Avesso da Pele", autor: "Jeferson Tenório", capa: "capa-5" },
+  { id: "cem-anos-de-solidao", titulo: "Cem Anos de Solidão", autor: "Gabriel García Márquez", capa: "capa-6" },
+];
+
+// Guarda o id da resenha que está sendo editada (null = cadastrando uma nova)
+let idEmEdicao = null;
+
+// Limite de caracteres do texto da resenha (o mesmo do maxlength no HTML)
+const LIMITE_TEXTO = 420;
+
 
 /* ---------- 2. FUNÇÕES DE APOIO: DADOS ---------- */
 
@@ -62,6 +78,25 @@ function gerarId() {
 // Encontra uma resenha pelo id (aceita número ou texto, ex.: vindo de data-id)
 function buscarResenhaPorId(id) {
   return resenhas.find((resenha) => resenha.id === Number(id));
+}
+
+// Encontra um livro do catálogo pelo id (ex.: "torto-arado")
+function buscarLivro(id) {
+  return livros.find((livro) => livro.id === id);
+}
+
+// Encontra um livro do catálogo pelo título (usado ao editar uma resenha)
+function buscarLivroPorTitulo(titulo) {
+  return livros.find((livro) => livro.titulo === titulo);
+}
+
+// Data de hoje no formato "2025-03-12" (usando o horário local, não o UTC)
+function dataDeHoje() {
+  const hoje = new Date();
+  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoje.getDate()).padStart(2, "0");
+
+  return `${hoje.getFullYear()}-${mes}-${dia}`;
 }
 
 
@@ -158,6 +193,9 @@ function criarCardResenha(resenha) {
         <div class="avaliacao-acoes">
           <button class="botao-texto" type="button" data-acao="detalhes" aria-label="Ver detalhes da resenha de ${livro}">
             Ver detalhes →
+          </button>
+          <button class="botao-texto" type="button" data-acao="editar" aria-label="Editar a resenha de ${livro}">
+            Editar
           </button>
           <button class="botao-texto botao-perigo" type="button" data-acao="excluir" aria-label="Excluir a resenha de ${livro}">
             Excluir
@@ -367,13 +405,231 @@ function tratarCliqueCard(evento) {
 
   if (acao === "detalhes") {
     visualizarResenha(id);
+  } else if (acao === "editar") {
+    editarResenha(id);
   } else if (acao === "excluir") {
     excluirResenha(id);
   }
 }
 
 
-/* ---------- 7. CONTROLE DA TELA ---------- */
+/* ---------- 7. FUNÇÕES OBRIGATÓRIAS: CADASTRAR E EDITAR ---------- */
+
+// Adiciona uma resenha nova ao array (os dados já chegam validados)
+function cadastrarResenha(dados) {
+  const livro = buscarLivro(dados.livroId);
+
+  resenhas.push({
+    id: gerarId(),
+    livro: livro.titulo,
+    autor: livro.autor,
+    capa: livro.capa,
+    nota: dados.nota,
+    texto: dados.texto,
+    data: dataDeHoje(),
+  });
+}
+
+// Abre o formulário já preenchido com a resenha escolhida
+function editarResenha(id) {
+  const resenha = buscarResenhaPorId(id);
+
+  if (!resenha) {
+    mostrarAviso("Resenha não encontrada.");
+    return;
+  }
+
+  abrirFormulario(resenha);
+}
+
+// Grava as alterações de uma resenha que já existe (a data original é mantida)
+function atualizarResenha(id, dados) {
+  const resenha = buscarResenhaPorId(id);
+  const livro = buscarLivro(dados.livroId);
+
+  resenha.livro = livro.titulo;
+  resenha.autor = livro.autor;
+  resenha.capa = livro.capa;
+  resenha.nota = dados.nota;
+  resenha.texto = dados.texto;
+}
+
+// Envio do formulário: valida e decide entre cadastrar ou atualizar
+function enviarFormulario(evento) {
+  // Impede o envio padrão, que recarregaria a página e apagaria os dados
+  evento.preventDefault();
+
+  const dados = lerFormulario();
+  const erros = validarResenha(dados);
+
+  limparErros();
+
+  if (Object.keys(erros).length > 0) {
+    for (const campo in erros) {
+      mostrarErro(campo, erros[campo]);
+    }
+    return;
+  }
+
+  const estavaEditando = idEmEdicao !== null;
+
+  if (estavaEditando) {
+    atualizarResenha(idEmEdicao, dados);
+  } else {
+    cadastrarResenha(dados);
+  }
+
+  fecharFormulario();
+  atualizarTela();
+  mostrarAviso(estavaEditando ? "Resenha atualizada." : "Resenha publicada.");
+}
+
+
+/* ---------- 8. FUNÇÕES DE APOIO: FORMULÁRIO ---------- */
+
+// Cria as opções do campo "Qual livro você leu?" a partir do catálogo
+function preencherSelectLivros() {
+  const select = document.getElementById("campo-livro");
+
+  for (const livro of livros) {
+    const opcao = document.createElement("option");
+    opcao.value = livro.id;
+    opcao.textContent = `${livro.titulo} — ${livro.autor}`;
+    select.appendChild(opcao);
+  }
+}
+
+// Abre a janela vazia (cadastrar) ou preenchida (editar)
+function abrirFormulario(resenha) {
+  limparFormulario();
+
+  if (resenha) {
+    idEmEdicao = resenha.id;
+    preencherFormulario(resenha);
+    document.getElementById("formulario-titulo").textContent = "Editar resenha";
+    document.getElementById("botao-salvar").textContent = "Salvar alterações";
+  } else {
+    document.getElementById("formulario-titulo").textContent = "Nova resenha";
+    document.getElementById("botao-salvar").textContent = "Publicar resenha →";
+  }
+
+  document.getElementById("janela-formulario").showModal();
+  document.getElementById("campo-livro").focus();
+}
+
+// Fecha a janela (a limpeza acontece no evento "close", que também cobre o Esc)
+function fecharFormulario() {
+  document.getElementById("janela-formulario").close();
+}
+
+// Coloca os dados de uma resenha nos campos
+function preencherFormulario(resenha) {
+  const livro = buscarLivroPorTitulo(resenha.livro);
+  const formulario = document.getElementById("formulario-resenha");
+
+  document.getElementById("campo-livro").value = livro ? livro.id : "";
+  formulario.querySelector(`input[name="nota"][value="${resenha.nota}"]`).checked = true;
+  document.getElementById("campo-texto").value = resenha.texto;
+
+  atualizarContador();
+  destacarNota();
+}
+
+// Zera os campos, os erros e o modo de edição
+function limparFormulario() {
+  document.getElementById("formulario-resenha").reset();
+  idEmEdicao = null;
+
+  limparErros();
+  atualizarContador();
+  destacarNota();
+}
+
+// Lê os valores atuais do formulário
+function lerFormulario() {
+  const notaMarcada = document.querySelector('#formulario-resenha input[name="nota"]:checked');
+
+  return {
+    livroId: document.getElementById("campo-livro").value,
+    nota: notaMarcada ? Number(notaMarcada.value) : 0,
+    texto: document.getElementById("campo-texto").value.trim(),
+  };
+}
+
+// Confere os dados e devolve os erros encontrados, ex.: { livro: "...", nota: "..." }
+function validarResenha(dados) {
+  const erros = {};
+
+  if (!buscarLivro(dados.livroId)) {
+    erros.livro = "Escolha o livro que você leu.";
+  } else {
+    // Um livro só pode ter uma resenha (a própria resenha em edição não conta)
+    const livro = buscarLivro(dados.livroId);
+    const jaAvaliado = resenhas.some(
+      (resenha) => resenha.livro === livro.titulo && resenha.id !== idEmEdicao
+    );
+
+    if (jaAvaliado) {
+      erros.livro = "Você já avaliou este livro. Use o botão Editar na resenha dele.";
+    }
+  }
+
+  if (dados.nota < 1 || dados.nota > 5) {
+    erros.nota = "Escolha uma nota de 1 a 5 estrelas.";
+  }
+
+  if (dados.texto === "") {
+    erros.texto = "Escreva um pouco sobre a sua leitura.";
+  } else if (dados.texto.length > LIMITE_TEXTO) {
+    erros.texto = `O texto pode ter no máximo ${LIMITE_TEXTO} caracteres.`;
+  }
+
+  return erros;
+}
+
+// Mostra a mensagem de erro embaixo do campo e marca o campo como inválido
+function mostrarErro(campo, mensagem) {
+  const campos = {
+    livro: "campo-livro",
+    nota: "campo-nota",
+    texto: "campo-texto",
+  };
+
+  document.getElementById(`erro-${campo}`).textContent = mensagem;
+  document.getElementById(campos[campo]).setAttribute("aria-invalid", "true");
+}
+
+// Remove todas as mensagens de erro do formulário
+function limparErros() {
+  const formulario = document.getElementById("formulario-resenha");
+
+  for (const erro of formulario.querySelectorAll(".campo-erro")) {
+    erro.textContent = "";
+  }
+  for (const campo of formulario.querySelectorAll("[aria-invalid]")) {
+    campo.removeAttribute("aria-invalid");
+  }
+}
+
+// Mostra quantos caracteres já foram digitados, ex.: "123/420"
+function atualizarContador() {
+  const tamanho = document.getElementById("campo-texto").value.length;
+  const contador = document.getElementById("contador-texto");
+
+  contador.textContent = `${tamanho}/${LIMITE_TEXTO}`;
+  contador.classList.toggle("contador-limite", tamanho >= LIMITE_TEXTO - 20);
+}
+
+// Destaca visualmente a nota escolhida
+function destacarNota() {
+  for (const opcao of document.querySelectorAll("#formulario-resenha .nota")) {
+    const marcada = opcao.querySelector("input").checked;
+    opcao.classList.toggle("selecionada", marcada);
+  }
+}
+
+
+/* ---------- 9. CONTROLE DA TELA ---------- */
 
 // Aplica pesquisa → filtro → ordem e redesenha a lista.
 // Deve ser chamada depois de qualquer mudança nas resenhas.
@@ -408,6 +664,24 @@ function configurarEventos() {
       fecharDetalhes();
     }
   });
+
+  // Botões "Nova resenha" e "+ Avaliar um livro": abrem a janela em vez de trocar de página
+  for (const botao of document.querySelectorAll("[data-abrir-formulario]")) {
+    botao.addEventListener("click", (evento) => {
+      evento.preventDefault();
+      abrirFormulario();
+    });
+  }
+
+  // Janela do formulário
+  const formulario = document.getElementById("formulario-resenha");
+  formulario.addEventListener("submit", enviarFormulario);
+  formulario.addEventListener("change", destacarNota);
+  document.getElementById("campo-texto").addEventListener("input", atualizarContador);
+  document.getElementById("fechar-formulario").addEventListener("click", fecharFormulario);
+  document.getElementById("cancelar-formulario").addEventListener("click", fecharFormulario);
+  // Fechou de qualquer jeito (X, Cancelar, Esc ou salvando): limpa tudo
+  document.getElementById("janela-formulario").addEventListener("close", limparFormulario);
 }
 
 // Ponto de partida: roda quando a página carrega
@@ -417,6 +691,7 @@ function iniciar() {
     return;
   }
 
+  preencherSelectLivros();
   configurarEventos();
   atualizarTela();
 }

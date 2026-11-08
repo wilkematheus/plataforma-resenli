@@ -1542,14 +1542,16 @@ button {
   color: var(--ferrugem);
 }
 
-/* Janela de detalhes (<dialog>) */
-.janela-detalhes {
+/* Janelas de detalhes e do formulário (<dialog>) */
+.janela-detalhes,
+.janela-formulario {
   margin: auto;
   border-radius: 15px;
   color: var(--tinta);
 }
 
-.janela-detalhes::backdrop {
+.janela-detalhes::backdrop,
+.janela-formulario::backdrop {
   background-color: rgba(29, 41, 34, 0.6);
 }
 
@@ -1582,7 +1584,8 @@ button {
 
 @media (max-width: 760px) {
   /* No celular, a janela sobe de baixo, como na página Nova resenha */
-  .janela-detalhes {
+  .janela-detalhes,
+  .janela-formulario {
     width: 100%;
     max-width: 100%;
     margin: auto 0 0;
@@ -1593,4 +1596,39 @@ button {
     grid-template-columns: 90px 1fr;
     gap: 15px;
   }
+}
+
+
+/* ---------- 13. CADASTRO E EDIÇÃO (Minhas avaliações) ---------- */
+
+/* Nota escolhida no formulário (classe colocada por destacarNota()) */
+.nota.selecionada {
+  border-color: var(--estrela);
+  background-color: #f8eadc;
+  font-weight: 700;
+}
+
+/* Mensagens de erro embaixo dos campos (somem quando estão vazias) */
+.campo-erro {
+  color: var(--ferrugem);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.campo-erro:empty {
+  display: none;
+}
+
+.campo-entrada[aria-invalid="true"] {
+  border-color: var(--ferrugem);
+}
+
+.notas[aria-invalid="true"] .nota {
+  border-color: var(--ferrugem);
+}
+
+/* Contador fica em destaque perto do limite de caracteres */
+.contador-limite {
+  color: var(--ferrugem);
+  font-weight: 700;
 }

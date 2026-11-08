@@ -91,7 +91,7 @@
               <path d="m16.2 16.2 4.3 4.3" />
             </svg>
           </a>
-          <a class="botao botao-primario" href="nova-resenha.html">
+          <a class="botao botao-primario" href="nova-resenha.html" data-abrir-formulario>
             <svg class="icone" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 5v14M5 12h14" />
             </svg>
@@ -108,7 +108,7 @@
             <h1 class="titulo-grande">Minhas avaliações</h1>
             <p class="texto-apoio">As histórias que passaram por você e o que ficou de cada uma.</p>
           </div>
-          <a class="botao botao-primario" href="nova-resenha.html">+ Avaliar um livro</a>
+          <a class="botao botao-primario" href="nova-resenha.html" data-abrir-formulario>+ Avaliar um livro</a>
         </header>
 
         <section class="estatisticas" aria-label="Estatísticas de leitura">
@@ -215,6 +215,85 @@
       </header>
 
       <div id="detalhes-conteudo"></div>
+    </dialog>
+
+    <!-- Janela do formulário: usada para cadastrar e para editar -->
+    <dialog class="card janela janela-formulario" id="janela-formulario" aria-labelledby="formulario-titulo">
+      <header class="janela-cabecalho">
+        <div>
+          <p class="sobretitulo">Compartilhe sua leitura</p>
+          <h2 id="formulario-titulo" class="titulo-medio">Nova resenha</h2>
+        </div>
+        <button class="botao-icone" type="button" id="fechar-formulario" aria-label="Fechar formulário">
+          <svg class="icone" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </header>
+
+      <!-- novalidate: a validação e as mensagens de erro ficam por conta do JS -->
+      <form class="formulario" id="formulario-resenha" novalidate>
+        <div class="campo">
+          <label class="campo-rotulo" for="campo-livro">Qual livro você leu?</label>
+          <!-- As opções são geradas por preencherSelectLivros() -->
+          <select class="campo-entrada" id="campo-livro" name="livro" aria-describedby="erro-livro">
+            <option value="">Selecione um livro</option>
+          </select>
+          <small class="campo-erro" id="erro-livro"></small>
+        </div>
+
+        <div class="campo">
+          <fieldset class="notas" id="campo-nota" aria-describedby="erro-nota">
+            <legend class="campo-rotulo">Como foi sua experiência?</legend>
+            <label class="nota">
+              <input class="nota-opcao" type="radio" name="nota" value="1" />
+              ★
+              <span class="oculto">1 estrela</span>
+            </label>
+            <label class="nota">
+              <input class="nota-opcao" type="radio" name="nota" value="2" />
+              ★★
+              <span class="oculto">2 estrelas</span>
+            </label>
+            <label class="nota">
+              <input class="nota-opcao" type="radio" name="nota" value="3" />
+              ★★★
+              <span class="oculto">3 estrelas</span>
+            </label>
+            <label class="nota">
+              <input class="nota-opcao" type="radio" name="nota" value="4" />
+              ★★★★
+              <span class="oculto">4 estrelas</span>
+            </label>
+            <label class="nota">
+              <input class="nota-opcao" type="radio" name="nota" value="5" />
+              ★★★★★
+              <span class="oculto">5 estrelas</span>
+            </label>
+          </fieldset>
+          <small class="campo-erro" id="erro-nota"></small>
+        </div>
+
+        <div class="campo">
+          <label class="campo-rotulo" for="campo-texto">Conte um pouco mais</label>
+          <textarea
+            class="campo-entrada campo-texto"
+            id="campo-texto"
+            name="texto"
+            rows="6"
+            maxlength="420"
+            placeholder="O que te atravessou nessa leitura?"
+            aria-describedby="erro-texto contador-texto"
+          ></textarea>
+          <small class="campo-erro" id="erro-texto"></small>
+          <small class="contador" id="contador-texto">0/420</small>
+        </div>
+
+        <div class="form-acoes">
+          <button class="botao botao-secundario" type="button" id="cancelar-formulario">Cancelar</button>
+          <button class="botao botao-primario" type="submit" id="botao-salvar">Publicar resenha →</button>
+        </div>
+      </form>
     </dialog>
 
     <script src="assets/js/resenhas.js"></script>
