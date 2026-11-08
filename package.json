@@ -1,0 +1,12 @@
+{
+  "name": "resenli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Resenli: plataforma de resenhas de livros",
+  "scripts": {
+    "start": "node servidor.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
