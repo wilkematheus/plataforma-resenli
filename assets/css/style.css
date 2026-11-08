@@ -1483,3 +1483,33 @@ button {
     bottom: 88px;
   }
 }
+
+
+/* ---------- 11. PESQUISA, FILTRO E ORDEM (Minhas avaliações) ---------- */
+
+.controles {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+/* Mensagem quando a lista está vazia ou a busca não encontra nada */
+.lista-vazia {
+  padding: 40px 20px;
+  border: 1px dashed #c9cfc6;
+  border-radius: 12px;
+  color: var(--cinza);
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .controles {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* No celular, a busca ocupa a linha inteira e os seletores ficam lado a lado */
+  .controle-busca {
+    grid-column: 1 / -1;
+  }
+}

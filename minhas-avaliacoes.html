@@ -115,63 +115,57 @@
           <dl class="estatisticas-lista">
             <div class="estatistica">
               <dt class="estatistica-rotulo">Livros avaliados</dt>
-              <dd class="estatistica-valor">8</dd>
+              <dd class="estatistica-valor" id="total-avaliados">–</dd>
             </div>
             <div class="estatistica">
               <dt class="estatistica-rotulo">Sua média</dt>
-              <dd class="estatistica-valor">4,6</dd>
+              <dd class="estatistica-valor" id="media-notas">–</dd>
             </div>
             <div class="estatistica">
               <dt class="estatistica-rotulo">Ano mais lido</dt>
-              <dd class="estatistica-valor">2024</dd>
+              <dd class="estatistica-valor" id="ano-mais-lido">–</dd>
             </div>
           </dl>
         </section>
 
-        <section class="lista-avaliacoes" aria-labelledby="titulo-historico">
+        <section class="controles" aria-label="Pesquisar, filtrar e ordenar avaliações">
+          <div class="campo controle-busca">
+            <label class="campo-rotulo" for="pesquisa-resenhas">Pesquisar</label>
+            <input
+              class="campo-entrada"
+              id="pesquisa-resenhas"
+              type="search"
+              placeholder="Título, autor ou trecho da resenha..."
+            />
+          </div>
+          <div class="campo">
+            <label class="campo-rotulo" for="filtro-nota">Nota</label>
+            <select class="campo-entrada" id="filtro-nota">
+              <option value="todas">Todas as notas</option>
+              <option value="5">★★★★★ (5)</option>
+              <option value="4">★★★★☆ (4)</option>
+              <option value="3">★★★☆☆ (3)</option>
+              <option value="2">★★☆☆☆ (2)</option>
+              <option value="1">★☆☆☆☆ (1)</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label class="campo-rotulo" for="ordem-resenhas">Ordenar por</label>
+            <select class="campo-entrada" id="ordem-resenhas">
+              <option value="recentes">Mais recentes</option>
+              <option value="antigas">Mais antigas</option>
+              <option value="maior-nota">Maior nota</option>
+              <option value="menor-nota">Menor nota</option>
+              <option value="titulo">Título (A–Z)</option>
+            </select>
+          </div>
+        </section>
+
+        <section aria-labelledby="titulo-historico">
           <h2 id="titulo-historico" class="oculto">Histórico de avaliações</h2>
 
-          <article class="card card-avaliacao">
-            <figure class="capa-livro">
-              <div class="capa capa-1" role="img" aria-label="Capa do livro Torto Arado">
-                <span class="capa-marca" aria-hidden="true">R</span>
-                <strong class="capa-titulo">Torto Arado</strong>
-                <small class="capa-autor">Itamar Vieira Junior</small>
-              </div>
-            </figure>
-            <div class="avaliacao-info">
-              <time class="data-avaliacao" datetime="2025-03-12">Avaliado em 12 de março de 2025</time>
-              <h3 class="livro-titulo">Torto Arado</h3>
-              <p class="livro-autor">Itamar Vieira Junior</p>
-              <p class="estrelas" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-              <blockquote class="resenha-texto">
-                “Uma história que parece nascer da própria terra. Itamar escreve com uma delicadeza imensa sobre
-                pertencimento, memória e tudo aquilo que herdamos sem escolher.”
-              </blockquote>
-              <a class="link-forte" href="#editar-avaliacao-torto-arado">Editar avaliação →</a>
-            </div>
-          </article>
-
-          <article class="card card-avaliacao">
-            <figure class="capa-livro">
-              <div class="capa capa-4" role="img" aria-label="Capa do livro Quarto de Despejo">
-                <span class="capa-marca" aria-hidden="true">R</span>
-                <strong class="capa-titulo">Quarto de Despejo</strong>
-                <small class="capa-autor">Carolina Maria de Jesus</small>
-              </div>
-            </figure>
-            <div class="avaliacao-info">
-              <time class="data-avaliacao" datetime="2025-02-20">Avaliado em 20 de fevereiro de 2025</time>
-              <h3 class="livro-titulo">Quarto de Despejo</h3>
-              <p class="livro-autor">Carolina Maria de Jesus</p>
-              <p class="estrelas" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-              <blockquote class="resenha-texto">
-                “Um livro indispensável. A voz de Carolina é direta, viva e impossível de ignorar. Terminei querendo
-                conversar sobre cada página.”
-              </blockquote>
-              <a class="link-forte" href="#editar-avaliacao-quarto-de-despejo">Editar avaliação →</a>
-            </div>
-          </article>
+          <!-- Os cards são montados por listarResenhas() em assets/js/resenhas.js -->
+          <div class="lista-avaliacoes" id="lista-resenhas" aria-live="polite"></div>
         </section>
       </main>
     </div>
