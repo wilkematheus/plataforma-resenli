@@ -13,6 +13,13 @@ let idEmEdicao = null;
 // Limite de caracteres do texto da resenha (o mesmo do maxlength no HTML)
 const LIMITE_TEXTO = 420;
 
+// Quantas resenhas aparecem de cada vez (o resto vem em "Mostrar mais")
+const POR_PAGINA = 5;
+let quantidadeVisivel = POR_PAGINA;
+
+// Como o formulário estava ao abrir, para saber se há algo não salvo
+let estadoInicialFormulario = "";
+
 
 /* ---------- 2. FUNÇÕES DE APOIO: DADOS ---------- */
 
@@ -143,14 +150,38 @@ function listarResenhas(lista) {
     } else {
       mostrarListaVazia("Nenhuma resenha encontrada. Tente outra busca ou outra nota.");
     }
+    atualizarBotaoMostrarMais(0);
     return;
   }
 
   let html = "";
-  for (const resenha of lista) {
+  for (const resenha of lista.slice(0, quantidadeVisivel)) {
     html += criarCardResenha(resenha);
   }
   container.innerHTML = html;
+
+  atualizarBotaoMostrarMais(lista.length);
+}
+
+// Mostra o botão "Mostrar mais" só quando ainda há resenhas escondidas
+function atualizarBotaoMostrarMais(total) {
+  const botao = document.getElementById("mostrar-mais");
+  const restantes = total - quantidadeVisivel;
+
+  botao.hidden = restantes <= 0;
+  botao.textContent = `Mostrar mais (${restantes} ${plural(restantes, "restante", "restantes")})`;
+}
+
+// Libera mais um bloco de resenhas e leva o foco para a primeira delas
+function mostrarMais() {
+  const jaVisiveis = quantidadeVisivel;
+  quantidadeVisivel += POR_PAGINA;
+  atualizarTela();
+
+  const primeiraNova = document.querySelectorAll("#lista-resenhas .card-avaliacao")[jaVisiveis];
+  if (primeiraNova) {
+    primeiraNova.querySelector("button").focus();
+  }
 }
 
 // Busca por título, autor ou texto (ignora acentos e maiúsculas)
@@ -250,25 +281,42 @@ function fecharDetalhes() {
   document.getElementById("janela-detalhes").close();
 }
 
-// Pede confirmação e remove a resenha do array
+// Remove a resenha do array e oferece "Desfazer" (em vez de perguntar antes)
 function excluirResenha(id) {
-  const resenha = buscarResenhaPorId(id);
+  const posicao = resenhas.findIndex((item) => item.id === Number(id));
 
-  if (!resenha) {
+  if (posicao === -1) {
     mostrarAviso("Resenha não encontrada.");
     return;
   }
 
-  const confirmou = confirm(`Excluir a resenha de "${resenha.livro}"?\nEssa ação não pode ser desfeita.`);
-  if (!confirmou) {
+  // splice tira a resenha e devolve o que foi removido
+  const [removida] = resenhas.splice(posicao, 1);
+
+  atualizarTela();
+  mostrarAviso(`Resenha de "${removida.livro}" excluída.`, {
+    rotulo: "Desfazer",
+    aoClicar: () => desfazerExclusao(removida, posicao),
+  });
+}
+
+// Devolve a resenha excluída para o lugar onde estava
+function desfazerExclusao(resenha, posicao) {
+  // Se o livro foi avaliado de novo nesse meio tempo, restaurar criaria duas resenhas do mesmo livro
+  if (resenhas.some((item) => item.livro === resenha.livro)) {
+    mostrarAviso(`Você já avaliou "${resenha.livro}" de novo, então não dá para restaurar a antiga.`);
     return;
   }
 
-  // Mantém todas as resenhas, menos a excluída
-  resenhas = resenhas.filter((item) => item.id !== resenha.id);
+  // O id da resenha excluída pode ter sido reaproveitado por uma nova
+  if (resenhas.some((item) => item.id === resenha.id)) {
+    resenha.id = gerarId();
+  }
+
+  resenhas.splice(Math.min(posicao, resenhas.length), 0, resenha);
 
   atualizarTela();
-  mostrarAviso("Resenha excluída.");
+  mostrarAviso("Resenha restaurada.");
 }
 
 // Um único "ouvinte" na lista: descobre qual botão foi clicado e em qual card
@@ -391,6 +439,9 @@ function abrirFormulario(resenha) {
     document.getElementById("botao-salvar").textContent = "Publicar resenha →";
   }
 
+  // Guarda como o formulário está agora; qualquer diferença depois disso é "não salvo"
+  estadoInicialFormulario = capturarEstadoFormulario();
+
   document.getElementById("janela-formulario").showModal();
   document.getElementById("campo-livro").focus();
 }
@@ -398,6 +449,31 @@ function abrirFormulario(resenha) {
 // Fecha a janela (a limpeza acontece no evento "close", que também cobre o Esc)
 function fecharFormulario() {
   document.getElementById("janela-formulario").close();
+}
+
+// Os valores dos campos em um texto só, para comparar antes e depois
+function capturarEstadoFormulario() {
+  return JSON.stringify(lerFormulario());
+}
+
+function formularioAlterado() {
+  return capturarEstadoFormulario() !== estadoInicialFormulario;
+}
+
+// Pergunta antes de descartar o que foi digitado. Devolve true se pode fechar.
+function confirmarDescarte() {
+  if (!formularioAlterado()) {
+    return true;
+  }
+
+  return confirm("Descartar o que você escreveu? As alterações não salvas serão perdidas.");
+}
+
+// Fechamento pedido pela pessoa (X ou Cancelar). Salvar usa fecharFormulario() direto.
+function tentarFecharFormulario() {
+  if (confirmarDescarte()) {
+    fecharFormulario();
+  }
 }
 
 // Coloca os dados de uma resenha nos campos
@@ -421,6 +497,7 @@ function limparFormulario() {
   limparErros();
   atualizarContador();
   destacarNota();
+  estadoInicialFormulario = capturarEstadoFormulario();
 }
 
 // Lê os valores atuais do formulário
@@ -507,11 +584,64 @@ function destacarNota() {
 }
 
 
-/* ---------- 8. CONTROLE DA TELA ---------- */
+/* ---------- 8. EXPORTAR ---------- */
+
+// Texto de uma célula do CSV: entre aspas, com aspas internas dobradas.
+// Valores que começam com = + - @ ganham um apóstrofo para o Excel não executá-los como fórmula.
+function escaparCelulaCSV(valor) {
+  let texto = String(valor);
+
+  if (/^[=+\-@\t\r]/.test(texto)) {
+    texto = `'${texto}`;
+  }
+
+  return `"${texto.replaceAll('"', '""')}"`;
+}
+
+// Monta o CSV (separado por ";", que é o que o Excel em português espera)
+function gerarCSV(lista) {
+  const cabecalho = ["Livro", "Autor", "Nota", "Data da avaliação", "Resenha"];
+  const linhas = lista.map((resenha) =>
+    [resenha.livro, resenha.autor, resenha.nota, resenha.data, resenha.texto].map(escaparCelulaCSV).join(";")
+  );
+
+  return [cabecalho.map(escaparCelulaCSV).join(";"), ...linhas].join("\r\n");
+}
+
+// Baixa TODAS as resenhas (não só as que estão na tela depois de pesquisar ou filtrar)
+function exportarResenhas() {
+  if (resenhas.length === 0) {
+    mostrarAviso("Não há avaliações para exportar.");
+    return;
+  }
+
+  // O ﻿ no começo faz o Excel reconhecer os acentos (UTF-8)
+  const csv = "﻿" + gerarCSV(ordenarResenhas(resenhas, "recentes"));
+  const arquivo = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const endereco = URL.createObjectURL(arquivo);
+
+  const link = document.createElement("a");
+  link.href = endereco;
+  link.download = `minhas-avaliacoes-${dataDeHoje()}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(endereco), 1000);
+
+  mostrarAviso(`${resenhas.length} ${plural(resenhas.length, "avaliação exportada", "avaliações exportadas")}.`);
+}
+
+
+/* ---------- 9. CONTROLE DA TELA ---------- */
 
 // Aplica pesquisa → filtro → ordem e redesenha a lista.
 // Deve ser chamada depois de qualquer mudança nas resenhas.
-function atualizarTela() {
+// Com reiniciarPagina = true, volta a mostrar só o primeiro bloco (usado ao mudar busca, filtro ou ordem).
+function atualizarTela(reiniciarPagina = false) {
+  if (reiniciarPagina === true) {
+    quantidadeVisivel = POR_PAGINA;
+  }
+
   const termo = document.getElementById("pesquisa-resenhas").value;
   const nota = document.getElementById("filtro-nota").value;
   const criterio = document.getElementById("ordem-resenhas").value;
@@ -527,9 +657,13 @@ function atualizarTela() {
 // Liga os campos da tela às funções
 function configurarEventos() {
   // "input" atualiza a cada letra digitada
-  document.getElementById("pesquisa-resenhas").addEventListener("input", atualizarTela);
-  document.getElementById("filtro-nota").addEventListener("change", atualizarTela);
-  document.getElementById("ordem-resenhas").addEventListener("change", atualizarTela);
+  // (arrow functions: o evento não pode ser repassado como argumento de atualizarTela)
+  document.getElementById("pesquisa-resenhas").addEventListener("input", () => atualizarTela(true));
+  document.getElementById("filtro-nota").addEventListener("change", () => atualizarTela(true));
+  document.getElementById("ordem-resenhas").addEventListener("change", () => atualizarTela(true));
+
+  document.getElementById("mostrar-mais").addEventListener("click", mostrarMais);
+  document.getElementById("exportar-resenhas").addEventListener("click", exportarResenhas);
 
   // Botões dentro dos cards (Ver detalhes, Excluir)
   document.getElementById("lista-resenhas").addEventListener("click", tratarCliqueCard);
@@ -556,10 +690,18 @@ function configurarEventos() {
   formulario.addEventListener("submit", enviarFormulario);
   formulario.addEventListener("change", destacarNota);
   document.getElementById("campo-texto").addEventListener("input", atualizarContador);
-  document.getElementById("fechar-formulario").addEventListener("click", fecharFormulario);
-  document.getElementById("cancelar-formulario").addEventListener("click", fecharFormulario);
+  document.getElementById("fechar-formulario").addEventListener("click", tentarFecharFormulario);
+  document.getElementById("cancelar-formulario").addEventListener("click", tentarFecharFormulario);
+
+  const janelaFormulario = document.getElementById("janela-formulario");
+  // Esc dispara "cancel" antes de fechar: se houver texto não salvo e a pessoa desistir, não fecha
+  janelaFormulario.addEventListener("cancel", (evento) => {
+    if (!confirmarDescarte()) {
+      evento.preventDefault();
+    }
+  });
   // Fechou de qualquer jeito (X, Cancelar, Esc ou salvando): limpa tudo
-  document.getElementById("janela-formulario").addEventListener("close", limparFormulario);
+  janelaFormulario.addEventListener("close", limparFormulario);
 }
 
 // Ponto de partida: roda quando a página carrega

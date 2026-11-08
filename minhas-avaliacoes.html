@@ -108,7 +108,10 @@
             <h1 class="titulo-grande">Minhas avaliações</h1>
             <p class="texto-apoio">As histórias que passaram por você e o que ficou de cada uma.</p>
           </div>
-          <a class="botao botao-primario" href="nova-resenha.html" data-abrir-formulario>+ Avaliar um livro</a>
+          <div class="cabecalho-botoes">
+            <button class="botao botao-secundario" type="button" id="exportar-resenhas">Exportar CSV</button>
+            <a class="botao botao-primario" href="nova-resenha.html" data-abrir-formulario>+ Avaliar um livro</a>
+          </div>
         </header>
 
         <section class="estatisticas" aria-label="Estatísticas de leitura">
@@ -166,6 +169,7 @@
 
           <!-- Os cards são montados por listarResenhas() em assets/js/resenhas.js -->
           <div class="lista-avaliacoes" id="lista-resenhas" aria-live="polite"></div>
+          <button class="botao botao-secundario botao-mostrar-mais" type="button" id="mostrar-mais" hidden>Mostrar mais</button>
         </section>
       </main>
     </div>
@@ -299,6 +303,7 @@
     <!-- A ordem importa: dados e utilitários primeiro, a página por último -->
     <script src="assets/js/dados.js"></script>
     <script src="assets/js/utils.js"></script>
+    <script src="assets/js/conta.js"></script>
     <script src="assets/js/layout.js"></script>
     <script src="assets/js/resenhas.js"></script>
   </body>

@@ -161,8 +161,9 @@ function criarCapa(livro) {
 
 /* ---------- 6. AVISOS ---------- */
 
-// Mostra uma mensagem rápida no canto da tela (ex.: "Resenha excluída")
-function mostrarAviso(mensagem) {
+// Mostra uma mensagem rápida no canto da tela (ex.: "Resenha excluída").
+// Com `acao` ({ rotulo, aoClicar }) o aviso ganha um botão e fica mais tempo na tela.
+function mostrarAviso(mensagem, acao) {
   let aviso = document.querySelector(".aviso");
 
   // Cria o elemento só na primeira vez
@@ -176,10 +177,24 @@ function mostrarAviso(mensagem) {
 
   aviso.textContent = mensagem;
   aviso.classList.add("visivel");
+  aviso.classList.toggle("aviso-com-acao", Boolean(acao));
+
+  if (acao) {
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.className = "aviso-acao";
+    botao.textContent = acao.rotulo;
+    botao.addEventListener("click", () => {
+      aviso.classList.remove("visivel");
+      acao.aoClicar();
+    });
+    aviso.appendChild(botao);
+  }
 
   // Reinicia o tempo caso outro aviso apareça antes de sumir
+  // (com botão, dá mais tempo para a pessoa ler e decidir)
   clearTimeout(aviso.temporizador);
   aviso.temporizador = setTimeout(() => {
     aviso.classList.remove("visivel");
-  }, 3000);
+  }, acao ? 7000 : 3000);
 }

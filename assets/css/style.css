@@ -1468,13 +1468,33 @@ button {
   box-shadow: 0 10px 30px rgba(15, 28, 21, 0.24);
   opacity: 0;
   pointer-events: none;
+  /* Escondido de verdade (não só transparente): o botão "Desfazer" não fica acessível pelo Tab */
+  visibility: hidden;
   transform: translate(-50%, 12px);
-  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.2s, transform 0.2s, visibility 0s 0.2s;
 }
 
 .aviso.visivel {
   opacity: 1;
+  visibility: visible;
   transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+
+/* Aviso com botão (ex.: Desfazer) precisa receber cliques */
+.aviso.aviso-com-acao.visivel {
+  pointer-events: auto;
+}
+
+.aviso-acao {
+  margin-left: 14px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--lima);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 /* No celular, fica acima da navegação inferior */
@@ -1640,4 +1660,32 @@ button {
 .acao[aria-pressed="true"] {
   color: var(--ferrugem);
   font-weight: 700;
+}
+
+
+/* ---------- 15. MELHORIAS NAS RESENHAS (Minhas avaliações) ---------- */
+
+/* Botões do cabeçalho: Exportar + Avaliar um livro */
+.cabecalho-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+/* "Mostrar mais" abaixo da lista */
+.botao-mostrar-mais {
+  display: flex;
+  margin: 18px auto 0;
+}
+
+/* .botao define display, o que anularia o atributo hidden */
+.botao[hidden] {
+  display: none;
+}
+
+/* ---------- 16. CONTA DE USUÁRIO ---------- */
+
+/* Mensagem geral do formulário de login/cadastro (some quando vazia) */
+.formulario > .campo-erro {
+  font-size: 13px;
 }

@@ -23,44 +23,51 @@
             Descubra novas leituras, compartilhe suas impressões e encontre pessoas que sentem histórias como você.
           </p>
 
-          <form class="formulario" action="inicio.html" method="get">
+          <form class="formulario" id="formulario-auth" novalidate>
             <div class="campo">
-              <label class="campo-rotulo" for="nome">Como podemos te chamar?</label>
+              <label class="campo-rotulo" for="campo-nome">Como podemos te chamar?</label>
               <input
                 class="campo-entrada"
-                id="nome"
+                id="campo-nome"
                 name="nome"
                 type="text"
                 placeholder="Seu nome"
                 autocomplete="name"
+                aria-describedby="erro-nome"
                 required
               />
+              <small class="campo-erro" id="erro-nome"></small>
             </div>
             <div class="campo">
-              <label class="campo-rotulo" for="email-cadastro">Seu e-mail</label>
+              <label class="campo-rotulo" for="campo-email">Seu e-mail</label>
               <input
                 class="campo-entrada"
-                id="email-cadastro"
+                id="campo-email"
                 name="email"
                 type="email"
                 placeholder="voce@email.com"
                 autocomplete="email"
+                aria-describedby="erro-email"
                 required
               />
+              <small class="campo-erro" id="erro-email"></small>
             </div>
             <div class="campo">
-              <label class="campo-rotulo" for="senha-cadastro">Sua senha</label>
+              <label class="campo-rotulo" for="campo-senha">Sua senha</label>
               <input
                 class="campo-entrada"
-                id="senha-cadastro"
+                id="campo-senha"
                 name="senha"
                 type="password"
                 placeholder="No mínimo 6 caracteres"
                 autocomplete="new-password"
                 minlength="6"
+                aria-describedby="erro-senha"
                 required
               />
+              <small class="campo-erro" id="erro-senha"></small>
             </div>
+            <p class="campo-erro" id="erro-formulario" role="alert"></p>
             <button class="botao botao-primario botao-largo" type="submit">Criar minha conta →</button>
           </form>
 
@@ -90,5 +97,9 @@
         </figure>
       </aside>
     </main>
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/conta.js"></script>
+    <script src="assets/js/auth.js"></script>
   </body>
 </html>

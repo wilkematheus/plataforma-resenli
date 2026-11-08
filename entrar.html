@@ -21,31 +21,36 @@
           <h1 id="titulo-login" class="titulo-grande">Que bom ter você de volta.</h1>
           <p class="texto-apoio">Entre para continuar suas leituras, listas e conversas.</p>
 
-          <form class="formulario" action="inicio.html" method="get">
+          <form class="formulario" id="formulario-auth" novalidate>
             <div class="campo">
-              <label class="campo-rotulo" for="email-login">Seu e-mail</label>
+              <label class="campo-rotulo" for="campo-email">Seu e-mail</label>
               <input
                 class="campo-entrada"
-                id="email-login"
+                id="campo-email"
                 name="email"
                 type="email"
                 placeholder="voce@email.com"
                 autocomplete="email"
+                aria-describedby="erro-email"
                 required
               />
+              <small class="campo-erro" id="erro-email"></small>
             </div>
             <div class="campo">
-              <label class="campo-rotulo" for="senha-login">Sua senha</label>
+              <label class="campo-rotulo" for="campo-senha">Sua senha</label>
               <input
                 class="campo-entrada"
-                id="senha-login"
+                id="campo-senha"
                 name="senha"
                 type="password"
                 placeholder="Digite sua senha"
                 autocomplete="current-password"
+                aria-describedby="erro-senha"
                 required
               />
+              <small class="campo-erro" id="erro-senha"></small>
             </div>
+            <p class="campo-erro" id="erro-formulario" role="alert"></p>
             <button class="botao botao-primario botao-largo" type="submit">Entrar no Resenli →</button>
           </form>
 
@@ -75,5 +80,9 @@
         </figure>
       </aside>
     </main>
+
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/conta.js"></script>
+    <script src="assets/js/auth.js"></script>
   </body>
 </html>

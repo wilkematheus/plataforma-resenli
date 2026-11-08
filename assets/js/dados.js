@@ -5,12 +5,9 @@
    ========================================================== */
 
 
-/* ---------- 1. USUÁRIO ---------- */
+/* ---------- 1. META DE LEITURA ---------- */
 
-const usuario = {
-  nome: "Matheus Wilke",
-  usuario: "wilkematheus",
-};
+// O usuário logado vem da sessão (veja conta.js e layout.js)
 
 // Quantos livros o usuário quer ler no ano (página Início)
 const metaLeitura = 12;
