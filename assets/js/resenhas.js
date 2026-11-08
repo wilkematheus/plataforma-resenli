@@ -58,6 +58,10 @@ function criarCardResenha(resenha) {
   const livro = escaparHTML(resenha.livro);
   const autor = escaparHTML(resenha.autor);
 
+  // O título leva para a página do livro (quando ele está no catálogo)
+  const doCatalogo = buscarLivroPorTitulo(resenha.livro);
+  const titulo = doCatalogo ? `<a class="link-titulo" href="livro.html?id=${doCatalogo.id}">${livro}</a>` : livro;
+
   return `
     <article class="card card-avaliacao" data-id="${resenha.id}">
       <figure class="capa-livro">
@@ -71,7 +75,7 @@ function criarCardResenha(resenha) {
         <time class="data-avaliacao" datetime="${escaparHTML(resenha.data)}">
           Avaliado em ${formatarData(resenha.data)}
         </time>
-        <h3 class="livro-titulo">${livro}</h3>
+        <h3 class="livro-titulo">${titulo}</h3>
         <p class="livro-autor">${autor}</p>
         ${renderizarEstrelas(resenha.nota)}
         <blockquote class="resenha-texto">“${escaparHTML(resenha.texto)}”</blockquote>
@@ -354,6 +358,9 @@ function cadastrarResenha(dados) {
     texto: dados.texto,
     data: dataDeHoje(),
   });
+
+  // Avaliar significa que o livro foi lido: ele sai da lista de leitura sozinho
+  definirStatus(livro.id, "lido");
 }
 
 // Abre o formulário já preenchido com a resenha escolhida
@@ -378,6 +385,8 @@ function atualizarResenha(id, dados) {
   resenha.capa = livro.capa;
   resenha.nota = dados.nota;
   resenha.texto = dados.texto;
+
+  definirStatus(livro.id, "lido");
 }
 
 // Envio do formulário: valida e decide entre cadastrar ou atualizar
@@ -398,6 +407,7 @@ function enviarFormulario(evento) {
   }
 
   const estavaEditando = idEmEdicao !== null;
+  const saiuDaLista = minhaLista.includes(dados.livroId);
 
   if (estavaEditando) {
     atualizarResenha(idEmEdicao, dados);
@@ -407,7 +417,10 @@ function enviarFormulario(evento) {
 
   fecharFormulario();
   atualizarTela();
-  mostrarAviso(estavaEditando ? "Resenha atualizada." : "Resenha publicada.");
+  atualizarContadorLista();
+
+  const mensagem = estavaEditando ? "Resenha atualizada." : "Resenha publicada.";
+  mostrarAviso(saiuDaLista ? `${mensagem} O livro saiu da sua lista de leitura.` : mensagem);
 }
 
 
@@ -714,6 +727,38 @@ function iniciar() {
   preencherSelectLivros();
   configurarEventos();
   atualizarTela();
+  abrirFormularioDaURL();
+}
+
+// Links de outras páginas: ?avaliar=<livro> abre o formulário com o livro escolhido
+// (ou a edição, se ele já foi avaliado)
+function abrirFormularioDaURL() {
+  const endereco = new URL(window.location.href);
+  const livroId = endereco.searchParams.get("avaliar");
+
+  if (!livroId) {
+    return;
+  }
+
+  // Limpa o parâmetro para um recarregamento não abrir o formulário de novo
+  endereco.searchParams.delete("avaliar");
+  history.replaceState(null, "", endereco);
+
+  const livro = buscarLivro(livroId);
+  if (!livro) {
+    return;
+  }
+
+  const existente = resenhas.find((resenha) => resenha.livro === livro.titulo);
+  if (existente) {
+    abrirFormulario(existente);
+    return;
+  }
+
+  abrirFormulario();
+  document.getElementById("campo-livro").value = livro.id;
+  // O livro escolhido pelo link não conta como "alteração não salva"
+  estadoInicialFormulario = capturarEstadoFormulario();
 }
 
 iniciar();

@@ -9,6 +9,12 @@
 // Resenhas exibidas no feed (montadas em montarFeed())
 let feed = [];
 
+// Tamanho máximo de um comentário (o mesmo do maxlength do campo)
+const LIMITE_COMENTARIO = 280;
+
+// Dá um id único a cada comentário novo
+let contadorComentarios = 0;
+
 
 /* ---------- 2. CABEÇALHO ---------- */
 
@@ -32,9 +38,9 @@ function exibirDataAtual() {
   document.getElementById("data-hoje").textContent = formatarDataExtensa(new Date());
 }
 
-// Meta de leitura: livros avaliados (resenhas do usuário) de metaLeitura
+// Meta de leitura: livros com status "lido" de metaLeitura
 function atualizarMetaLeitura() {
-  const lidos = resenhas.length;
+  const lidos = contarLidos();
   const porcentagem = (lidos / metaLeitura) * 100;
   let mensagem = "Toda grande leitura começa pela primeira página";
 
@@ -74,12 +80,62 @@ function montarFeed() {
     data: new Date(agora - item.minutosAtras * 60000),
     etiqueta: item.etiqueta,
     curtidas: item.curtidas,
-    comentarios: item.comentarios,
+    // Cópia dos comentários: os da pessoa logada são acrescentados só no feed
+    comentarios: item.comentarios.map((comentario) => ({
+      ...comentario,
+      data: new Date(agora - comentario.minutosAtras * 60000),
+      meu: false,
+    })),
+    comentariosAbertos: false,
     curtido: false,
     salvo: false,
   }));
 
   feed.sort((a, b) => b.data - a.data);
+}
+
+// Lista de comentários de uma resenha + campo para comentar
+function criarHtmlComentarios(item) {
+  let lista = "";
+
+  for (const comentario of item.comentarios) {
+    // Só os comentários da própria pessoa podem ser excluídos
+    const excluir = comentario.meu
+      ? `<button class="botao-texto botao-perigo" type="button" data-acao="excluir-comentario"
+          data-comentario-id="${comentario.id}" aria-label="Excluir seu comentário">Excluir</button>`
+      : "";
+
+    lista += `
+      <li class="comentario">
+        <span class="avatar avatar-pequeno ${comentario.avatar}" aria-hidden="true">${gerarIniciais(comentario.autor)}</span>
+        <div class="comentario-corpo">
+          <p class="comentario-cabecalho">
+            <strong>${escaparHTML(comentario.autor)}</strong>
+            <time datetime="${comentario.data.toISOString()}">${formatarTempoRelativo(comentario.data)}</time>
+          </p>
+          <p class="comentario-texto">${escaparHTML(comentario.texto)}</p>
+          ${excluir}
+        </div>
+      </li>
+    `;
+  }
+
+  if (lista === "") {
+    lista = '<li class="comentario-vazio">Ninguém comentou ainda. Seja a primeira pessoa!</li>';
+  }
+
+  return `
+    <section class="comentarios" id="comentarios-${item.id}" aria-label="Comentários" ${item.comentariosAbertos ? "" : "hidden"}>
+      <ul class="comentarios-lista">${lista}</ul>
+      <form class="comentario-form" novalidate>
+        <label class="oculto" for="comentario-${item.id}">Escreva um comentário</label>
+        <textarea class="campo-entrada campo-texto" id="comentario-${item.id}" rows="2"
+          maxlength="${LIMITE_COMENTARIO}" placeholder="Escreva um comentário..."></textarea>
+        <small class="campo-erro" role="alert"></small>
+        <button class="botao botao-primario" type="submit">Comentar</button>
+      </form>
+    </section>
+  `;
 }
 
 // Gera o HTML de um card do feed
@@ -104,7 +160,7 @@ function criarCardFeed(item) {
         ${criarCapa(item.livro)}
         <div class="resenha-info">
           ${renderizarEstrelas(item.nota)}
-          <h3 class="livro-titulo">${titulo}</h3>
+          <h3 class="livro-titulo"><a class="link-titulo" href="livro.html?id=${item.livro.id}">${titulo}</a></h3>
           <p class="livro-autor">${autorLivro}</p>
           <blockquote class="resenha-texto">${escaparHTML(item.texto)}</blockquote>
         </div>
@@ -115,14 +171,17 @@ function criarCardFeed(item) {
           aria-pressed="${item.curtido}" aria-label="Curtir resenha de ${autorResenha} (${item.curtidas} curtidas)">
           ${item.curtido ? "♥" : "♡"} ${item.curtidas}
         </button>
-        <a class="acao" href="#comentarios-${item.id}">
-          ${item.comentarios} ${plural(item.comentarios, "comentário", "comentários")}
-        </a>
+        <button class="acao" type="button" data-acao="comentarios"
+          aria-expanded="${item.comentariosAbertos}" aria-controls="comentarios-${item.id}">
+          ${item.comentarios.length} ${plural(item.comentarios.length, "comentário", "comentários")}
+        </button>
         <button class="acao acao-salvar" type="button" data-acao="salvar"
           aria-pressed="${item.salvo}" aria-label="Salvar resenha de ${autorResenha}">
           ${item.salvo ? "Salvo ✓" : "Salvar"}
         </button>
       </footer>
+
+      ${criarHtmlComentarios(item)}
     </article>
   `;
 }
@@ -153,6 +212,11 @@ function atualizarCardFeed(item, acao) {
   temporario.innerHTML = criarCardFeed(item);
 
   const cardNovo = temporario.firstElementChild;
+
+  // Não perde o comentário que a pessoa estava escrevendo
+  const rascunho = cardAtual.querySelector("textarea").value;
+  cardNovo.querySelector("textarea").value = rascunho;
+
   cardAtual.replaceWith(cardNovo);
 
   // Devolve o foco ao mesmo botão, para quem navega pelo teclado
@@ -175,6 +239,49 @@ function salvarResenha(item) {
   mostrarAviso(item.salvo ? "Resenha salva." : "Resenha removida dos salvos.");
 }
 
+// Mostra ou esconde os comentários da resenha
+function alternarComentarios(item) {
+  item.comentariosAbertos = !item.comentariosAbertos;
+
+  atualizarCardFeed(item, "comentarios");
+}
+
+// Valida e acrescenta um comentário da pessoa logada
+function publicarComentario(item, formulario) {
+  const campo = formulario.querySelector("textarea");
+  const erro = formulario.querySelector(".campo-erro");
+  const texto = campo.value.trim();
+
+  if (texto === "") {
+    erro.textContent = "Escreva algo antes de comentar.";
+    campo.setAttribute("aria-invalid", "true");
+    campo.focus();
+    return;
+  }
+
+  item.comentarios.push({
+    id: `meu-${++contadorComentarios}`,
+    autor: usuario.nome,
+    avatar: "avatar-perfil",
+    texto,
+    data: new Date(),
+    meu: true,
+  });
+
+  // O campo é esvaziado antes de redesenhar o card, para o rascunho não voltar
+  campo.value = "";
+  atualizarCardFeed(item, "comentarios");
+  document.querySelector(`#comentario-${item.id}`).focus();
+  mostrarAviso("Comentário publicado.");
+}
+
+function excluirComentario(item, comentarioId) {
+  item.comentarios = item.comentarios.filter((comentario) => comentario.id !== comentarioId);
+
+  atualizarCardFeed(item, "comentarios");
+  mostrarAviso("Comentário excluído.");
+}
+
 // Um único "ouvinte" no feed: descobre o botão e o card clicados
 function tratarCliqueFeed(evento) {
   const botao = evento.target.closest("[data-acao]");
@@ -184,12 +291,30 @@ function tratarCliqueFeed(evento) {
 
   const id = botao.closest("[data-id]").dataset.id;
   const item = feed.find((resenha) => resenha.id === id);
+  const acao = botao.dataset.acao;
 
-  if (botao.dataset.acao === "curtir") {
+  if (acao === "curtir") {
     curtirResenha(item);
-  } else if (botao.dataset.acao === "salvar") {
+  } else if (acao === "salvar") {
     salvarResenha(item);
+  } else if (acao === "comentarios") {
+    alternarComentarios(item);
+  } else if (acao === "excluir-comentario") {
+    excluirComentario(item, botao.dataset.comentarioId);
   }
+}
+
+// Envio do formulário de comentário (o evento "submit" sobe até o feed)
+function tratarEnvioFeed(evento) {
+  if (!evento.target.matches(".comentario-form")) {
+    return;
+  }
+
+  // Impede o envio padrão, que recarregaria a página
+  evento.preventDefault();
+
+  const id = evento.target.closest("[data-id]").dataset.id;
+  publicarComentario(feed.find((resenha) => resenha.id === id), evento.target);
 }
 
 
@@ -203,6 +328,15 @@ function iniciarInicio() {
   montarFeed();
   renderizarFeed();
   document.getElementById("feed-resenhas").addEventListener("click", tratarCliqueFeed);
+  document.getElementById("feed-resenhas").addEventListener("submit", tratarEnvioFeed);
+
+  // Ao voltar a digitar, a mensagem de erro do comentário some
+  document.getElementById("feed-resenhas").addEventListener("input", (evento) => {
+    if (evento.target.matches(".comentario-form textarea")) {
+      evento.target.removeAttribute("aria-invalid");
+      evento.target.closest("form").querySelector(".campo-erro").textContent = "";
+    }
+  });
 }
 
 iniciarInicio();

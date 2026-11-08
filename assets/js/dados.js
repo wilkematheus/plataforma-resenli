@@ -92,10 +92,22 @@ const livros = [
 ];
 
 
-/* ---------- 3. MINHA LISTA ---------- */
+/* ---------- 3. MINHA LISTA E STATUS DE LEITURA ---------- */
 
-// Ids dos livros salvos, na ordem em que aparecem na estante
-let minhaLista = ["torto-arado", "tudo-e-rio", "quarto-de-despejo", "cem-anos-de-solidao"];
+// Status de cada livro: "quero-ler", "lendo" ou "lido" (sem status = livro sem relação com o usuário).
+// Os livros avaliados abaixo já aparecem como lidos.
+let statusLeitura = {
+  "torto-arado": "lido",
+  "quarto-de-despejo": "lido",
+  "addie-larue": "lido",
+  "tudo-e-rio": "quero-ler",
+  "avesso-da-pele": "lendo",
+  "cem-anos-de-solidao": "quero-ler",
+};
+
+// Ids dos livros que ainda faltam ler (quero ler + lendo), na ordem da estante.
+// Um livro lido sai daqui automaticamente.
+let minhaLista = ["tudo-e-rio", "avesso-da-pele", "cem-anos-de-solidao"];
 
 
 /* ---------- 4. RESENHAS DO USUÁRIO (Minhas avaliações) ---------- */
@@ -137,10 +149,11 @@ let resenhas = [
 ];
 
 
-/* ---------- 5. RESENHAS DA COMUNIDADE (Início) ---------- */
+/* ---------- 5. RESENHAS DA COMUNIDADE (Início e página do livro) ---------- */
 
 // "minutosAtras" vira uma data real quando a página carrega,
-// para o "Há 18 minutos" continuar fazendo sentido em qualquer dia
+// para o "Há 18 minutos" continuar fazendo sentido em qualquer dia.
+// "comentarios" é a lista de comentários da resenha.
 const resenhasComunidade = [
   {
     id: "c1",
@@ -154,7 +167,11 @@ const resenhasComunidade = [
     minutosAtras: 18,
     etiqueta: "Mais comentada",
     curtidas: 248,
-    comentarios: 32,
+    comentarios: [
+      { id: "c1-1", autor: "Rafael Lima", avatar: "avatar-2", texto: "Concordo demais, a Bibiana e a Belonísia ficaram comigo por semanas.", minutosAtras: 12 },
+      { id: "c1-2", autor: "Clara Nunes", avatar: "avatar-3", texto: "Vou ler no próximo mês, obrigada pela indicação!", minutosAtras: 7 },
+      { id: "c1-3", autor: "João Pedro", avatar: "avatar-2", texto: "Que final. Ainda estou pensando nele.", minutosAtras: 3 },
+    ],
   },
   {
     id: "c2",
@@ -168,7 +185,9 @@ const resenhasComunidade = [
     minutosAtras: 60,
     etiqueta: "",
     curtidas: 186,
-    comentarios: 21,
+    comentarios: [
+      { id: "c2-1", autor: "Marina Campos", avatar: "avatar-1", texto: "Também achei lento no começo, mas vale a pena.", minutosAtras: 40 },
+    ],
   },
   {
     id: "c3",
@@ -182,6 +201,51 @@ const resenhasComunidade = [
     minutosAtras: 120,
     etiqueta: "Em alta",
     curtidas: 312,
-    comentarios: 47,
+    comentarios: [
+      { id: "c3-1", autor: "Rafael Lima", avatar: "avatar-2", texto: "Leitura obrigatória nas escolas.", minutosAtras: 100 },
+      { id: "c3-2", autor: "Marina Campos", avatar: "avatar-1", texto: "Fiquei sem palavras. Que diário!", minutosAtras: 90 },
+    ],
+  },
+  {
+    id: "c4",
+    autor: "Rafael Lima",
+    avatar: "avatar-2",
+    livroId: "cem-anos-de-solidao",
+    nota: 5,
+    texto:
+      "Macondo é um lugar onde tudo é possível. Precisei de um papel com a árvore genealógica, mas cada " +
+      "página valeu o esforço.",
+    minutosAtras: 300,
+    etiqueta: "",
+    curtidas: 154,
+    comentarios: [],
+  },
+  {
+    id: "c5",
+    autor: "Marina Campos",
+    avatar: "avatar-1",
+    livroId: "tudo-e-rio",
+    nota: 4,
+    texto:
+      "Um romance que dói e acolhe ao mesmo tempo. Carla Madeira escreve de um jeito que não dá para largar.",
+    minutosAtras: 1500,
+    etiqueta: "",
+    curtidas: 97,
+    comentarios: [
+      { id: "c5-1", autor: "Clara Nunes", avatar: "avatar-3", texto: "Li em dois dias. Impossível parar.", minutosAtras: 1400 },
+    ],
+  },
+  {
+    id: "c6",
+    autor: "Clara Nunes",
+    avatar: "avatar-3",
+    livroId: "torto-arado",
+    nota: 4,
+    texto:
+      "A segunda metade me pegou de jeito. Um retrato duro e bonito do sertão baiano.",
+    minutosAtras: 3000,
+    etiqueta: "",
+    curtidas: 63,
+    comentarios: [],
   },
 ];

@@ -10,7 +10,16 @@
 function criarCardLivro(livro) {
   const titulo = escaparHTML(livro.titulo);
   const naLista = minhaLista.includes(livro.id);
+  const lido = obterStatus(livro.id) === "lido";
   const avaliacoes = `${formatarMilhar(livro.totalAvaliacoes)} ${plural(livro.totalAvaliacoes, "avaliação", "avaliações")}`;
+
+  // Livro já lido não vai para a lista de leitura: o botão só informa
+  const botao = lido
+    ? `<button class="botao botao-contorno salvo" type="button" disabled>✓ Já lido</button>`
+    : `<button class="botao botao-contorno ${naLista ? "salvo" : ""}" type="button"
+        data-livro-id="${livro.id}" aria-pressed="${naLista}">
+        ${naLista ? "✓ Na minha lista" : "+ Adicionar à minha lista"}
+      </button>`;
 
   return `
     <li>
@@ -18,14 +27,11 @@ function criarCardLivro(livro) {
         ${criarCapa(livro)}
         <div class="livro-info">
           ${renderizarNotaMedia(livro.notaMedia)}
-          <h3 class="livro-titulo">${titulo}</h3>
+          <h3 class="livro-titulo"><a class="link-titulo" href="livro.html?id=${livro.id}">${titulo}</a></h3>
           <p class="livro-autor">${escaparHTML(livro.autor)}</p>
           <small class="livro-detalhe">${livro.ano} · ${avaliacoes}</small>
         </div>
-        <button class="botao botao-contorno ${naLista ? "salvo" : ""}" type="button"
-          data-livro-id="${livro.id}" aria-pressed="${naLista}">
-          ${naLista ? "✓ Na minha lista" : "+ Adicionar à minha lista"}
-        </button>
+        ${botao}
       </article>
     </li>
   `;
@@ -111,11 +117,8 @@ function alternarLista(botao) {
   const livro = buscarLivro(id);
   const estavaNaLista = minhaLista.includes(id);
 
-  if (estavaNaLista) {
-    minhaLista = minhaLista.filter((item) => item !== id);
-  } else {
-    minhaLista.push(id);
-  }
+  // Adicionar = "quero ler"; remover tira o livro de qualquer status de leitura
+  definirStatus(id, estavaNaLista ? "" : "quero-ler");
 
   const naLista = !estavaNaLista;
   botao.classList.toggle("salvo", naLista);

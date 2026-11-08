@@ -10,6 +10,8 @@
   --lateral: #f3f4ed;
   --verde: #244d3b;
   --verde-claro: #35654e;
+  /* Verde para texto e bordas sobre o fundo da página (no modo escuro fica mais claro) */
+  --verde-texto: #244d3b;
   --lima: #d8ee8f;
   --ferrugem: #ad4f30;
   --estrela: #bd6b2e;
@@ -155,7 +157,7 @@ button {
 }
 
 .link-forte {
-  color: var(--verde);
+  color: var(--verde-texto);
   font-size: 13px;
   font-weight: 700;
 }
@@ -201,9 +203,9 @@ button {
 
 .botao-contorno {
   min-height: 38px;
-  border: 1px solid var(--verde);
+  border: 1px solid var(--verde-texto);
   background-color: transparent;
-  color: var(--verde);
+  color: var(--verde-texto);
   font-size: 13px;
 }
 
@@ -269,8 +271,8 @@ button {
 }
 
 .campo-entrada:focus {
-  outline: 2px solid var(--verde);
-  border-color: var(--verde);
+  outline: 2px solid var(--verde-texto);
+  border-color: var(--verde-texto);
 }
 
 .campo-texto {
@@ -594,7 +596,7 @@ button {
 
 .nav-link:hover {
   background-color: rgba(36, 77, 59, 0.06);
-  color: var(--verde);
+  color: var(--verde-texto);
 }
 
 .nav-link.ativo {
@@ -770,11 +772,11 @@ button {
 .meta-barra {
   width: 100%;
   height: 8px;
-  accent-color: var(--verde);
+  accent-color: var(--verde-texto);
 }
 
 .meta-nota {
-  color: var(--verde);
+  color: var(--verde-texto);
   font-size: 12px;
   font-weight: 600;
 }
@@ -1248,7 +1250,7 @@ button {
   }
 
   .topo-titulo-desktop,
-  .topo-acoes {
+  .topo-acoes > :not(.botao-tema) {
     display: none;
   }
 
@@ -1549,7 +1551,7 @@ button {
   padding: 0;
   border: none;
   background: none;
-  color: var(--verde);
+  color: var(--verde-texto);
   font-size: 13px;
   font-weight: 700;
 }
@@ -1688,4 +1690,349 @@ button {
 /* Mensagem geral do formulário de login/cadastro (some quando vazia) */
 .formulario > .campo-erro {
   font-size: 13px;
+}
+
+
+/* ---------- 17. MODO ESCURO ---------- */
+
+/* Botão de alternar o tema (criado por tema.js) */
+.botao-tema {
+  background: none;
+  color: inherit;
+}
+
+/* Nas páginas sem barra de topo (login, cadastro), fica no canto da tela */
+.botao-tema-flutuante {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 70;
+  background-color: var(--cartao);
+}
+
+html[data-tema="escuro"] {
+  color-scheme: dark;
+
+  --tinta: #e8ece6;
+  --cinza: #9aa59d;
+  --linha: #34403a;
+  --papel: #141a17;
+  --cartao: #1c2420;
+  --creme: #25302a;
+  --lateral: #19211d;
+  --verde: #2c6249;
+  --verde-claro: #367556;
+  --verde-texto: #8fd0ad;
+  --ferrugem: #e08a67;
+  --estrela: #e0954d;
+}
+
+/* Cores que estavam escritas direto nas regras (não em variáveis) */
+html[data-tema="escuro"] .botao-secundario:hover {
+  background-color: #2f3b34;
+}
+
+html[data-tema="escuro"] .campo-rotulo {
+  color: #c5cec7;
+}
+
+html[data-tema="escuro"] .campo-entrada,
+html[data-tema="escuro"] .busca-form,
+html[data-tema="escuro"] .nota {
+  background-color: #111713;
+}
+
+html[data-tema="escuro"] .campo-entrada {
+  border-color: var(--linha);
+}
+
+html[data-tema="escuro"] .campo-entrada:hover {
+  border-color: #5b6a61;
+}
+
+html[data-tema="escuro"] .resenha-texto {
+  color: #bcc6bf;
+}
+
+html[data-tema="escuro"] .pagina-auth {
+  background-color: var(--papel);
+}
+
+html[data-tema="escuro"] .nav-link {
+  color: #a9b5ad;
+}
+
+html[data-tema="escuro"] .nav-link.ativo {
+  color: #ffffff;
+}
+
+html[data-tema="escuro"] .nav-link:hover {
+  background-color: rgba(143, 208, 173, 0.08);
+}
+
+html[data-tema="escuro"] .nav-contador {
+  background-color: rgba(143, 208, 173, 0.15);
+}
+
+html[data-tema="escuro"] .nav-link.ativo .nav-contador {
+  background-color: rgba(255, 255, 255, 0.17);
+}
+
+html[data-tema="escuro"] .topo {
+  background-color: rgba(20, 26, 23, 0.92);
+}
+
+html[data-tema="escuro"] .etiqueta {
+  background-color: #2b3623;
+  color: #c5dd9a;
+}
+
+html[data-tema="escuro"] .resenha-rodape {
+  border-top-color: var(--linha);
+}
+
+html[data-tema="escuro"] .acao {
+  color: #9aa59d;
+}
+
+html[data-tema="escuro"] .posicao {
+  color: #3a4640;
+}
+
+html[data-tema="escuro"] .botao-remover:hover {
+  background-color: #3a2a25;
+}
+
+html[data-tema="escuro"] .estatistica {
+  border-left-color: var(--linha);
+}
+
+html[data-tema="escuro"] .nota.selecionada {
+  background-color: #3b2c1f;
+}
+
+html[data-tema="escuro"] .lista-vazia {
+  border-color: #3a4640;
+}
+
+/* O botão flutuante usa --ferrugem como fundo: precisa continuar escuro para o texto branco */
+html[data-tema="escuro"] .botao-flutuante {
+  background-color: #b44828;
+}
+
+html[data-tema="escuro"] .nav-mobile {
+  background-color: #0f1411;
+  border: 1px solid var(--linha);
+}
+
+/* Aviso: no escuro vira um cartão claro */
+html[data-tema="escuro"] .aviso {
+  background-color: #e8ece6;
+  color: #141a17;
+}
+
+html[data-tema="escuro"] .aviso-acao {
+  color: #1d5b3f;
+}
+
+html[data-tema="escuro"] .janela-detalhes::backdrop,
+html[data-tema="escuro"] .janela-formulario::backdrop {
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+
+/* ---------- 18. EXTRAS: PÁGINA DO LIVRO, ABAS E COMENTÁRIOS ---------- */
+
+/* Título de livro que também é link (cards de livros e resenhas) */
+.link-titulo {
+  color: inherit;
+}
+
+.link-titulo:hover {
+  color: var(--verde-texto);
+  text-decoration: underline;
+}
+
+/* Página do livro */
+.voltar {
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.livro-pagina {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.livro-pagina .titulo-grande {
+  margin: 6px 0 4px;
+}
+
+.livro-pagina-info .livro-autor {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.livro-pagina-info .livro-detalhe {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.livro-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.livro-acoes .campo {
+  min-width: 220px;
+}
+
+.livro-status-nota {
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.livro-resenhas {
+  margin-top: 8px;
+}
+
+.card-resenha-livro {
+  padding-bottom: 18px;
+}
+
+.card-resenha-livro .resenha-info {
+  margin-top: 16px;
+}
+
+.resenha-curtidas {
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+/* Abas de status da Minha lista */
+.abas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.aba {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--linha);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--cinza);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.aba:hover {
+  background-color: var(--creme);
+}
+
+.aba[aria-pressed="true"] {
+  border-color: var(--verde);
+  background-color: var(--verde);
+  color: #ffffff;
+}
+
+.aba-contador {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: 11px;
+  background-color: rgba(127, 127, 127, 0.18);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Comentários das resenhas (Início) */
+.comentarios {
+  padding: 4px 0 20px;
+  border-top: 1px solid var(--linha);
+}
+
+.comentarios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.comentario {
+  display: flex;
+  gap: 11px;
+}
+
+.comentario-corpo {
+  flex: 1;
+  min-width: 0;
+}
+
+.comentario-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.comentario-cabecalho time {
+  color: var(--cinza);
+  font-size: 11px;
+}
+
+.comentario-texto {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.comentario-vazio {
+  color: var(--cinza);
+  font-size: 13px;
+}
+
+.comentario-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.comentario-form .campo-texto {
+  min-height: 64px;
+}
+
+@media (max-width: 760px) {
+  .livro-pagina {
+    grid-template-columns: 120px 1fr;
+    gap: 18px;
+  }
+
+  .livro-acoes .campo {
+    width: 100%;
+  }
+
+  .livro-acoes .botao {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .livro-pagina {
+    grid-template-columns: 1fr;
+  }
+
+  .livro-pagina .capa-livro {
+    width: 140px;
+  }
 }

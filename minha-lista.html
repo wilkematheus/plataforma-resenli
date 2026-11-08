@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minha lista | Resenli</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/js/tema.js"></script>
   </head>
   <body class="pagina-app">
     <!-- Barra lateral (computador) -->
@@ -117,13 +118,19 @@
           </p>
         </section>
 
+        <nav class="abas" aria-label="Filtrar por status de leitura">
+          <button class="aba" type="button" data-status="quero-ler" aria-pressed="true">Quero ler <span class="aba-contador">0</span></button>
+          <button class="aba" type="button" data-status="lendo" aria-pressed="false">Lendo <span class="aba-contador">0</span></button>
+          <button class="aba" type="button" data-status="lido" aria-pressed="false">Lidos <span class="aba-contador">0</span></button>
+        </nav>
+
         <section class="estante" aria-labelledby="titulo-livros-salvos">
           <h2 id="titulo-livros-salvos" class="oculto">Livros salvos</h2>
 
           <!-- Os cards são montados por renderizarLista() em assets/js/minha-lista.js -->
           <ol class="grade-estante" id="grade-estante"></ol>
           <p class="lista-vazia" id="lista-vazia" hidden>
-            Sua lista está vazia.
+            <span id="lista-vazia-texto">Sua lista está vazia.</span>
             <a class="link-forte" href="pesquisar.html">Encontrar um livro →</a>
           </p>
         </section>
@@ -163,6 +170,7 @@
     <!-- A ordem importa: dados e utilitários primeiro, a página por último -->
     <script src="assets/js/dados.js"></script>
     <script src="assets/js/utils.js"></script>
+    <script src="assets/js/status.js"></script>
     <script src="assets/js/conta.js"></script>
     <script src="assets/js/layout.js"></script>
     <script src="assets/js/minha-lista.js"></script>
