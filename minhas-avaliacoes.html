@@ -200,6 +200,23 @@
       </a>
     </nav>
 
+    <!-- Janela de detalhes: preenchida por visualizarResenha() -->
+    <dialog class="card janela janela-detalhes" id="janela-detalhes" aria-labelledby="detalhes-titulo">
+      <header class="janela-cabecalho">
+        <div>
+          <p class="sobretitulo">Detalhes da avaliação</p>
+          <h2 id="detalhes-titulo" class="titulo-medio"></h2>
+        </div>
+        <button class="botao-icone" type="button" id="fechar-detalhes" aria-label="Fechar detalhes">
+          <svg class="icone" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </header>
+
+      <div id="detalhes-conteudo"></div>
+    </dialog>
+
     <script src="assets/js/resenhas.js"></script>
   </body>
 </html>

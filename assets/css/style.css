@@ -1513,3 +1513,84 @@ button {
     grid-column: 1 / -1;
   }
 }
+
+
+/* ---------- 12. DETALHES E EXCLUSÃO (Minhas avaliações) ---------- */
+
+/* Botões dos cards com cara de link */
+.avaliacao-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.botao-texto {
+  min-height: 32px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--verde);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.botao-texto:hover {
+  text-decoration: underline;
+}
+
+.botao-perigo {
+  color: var(--ferrugem);
+}
+
+/* Janela de detalhes (<dialog>) */
+.janela-detalhes {
+  margin: auto;
+  border-radius: 15px;
+  color: var(--tinta);
+}
+
+.janela-detalhes::backdrop {
+  background-color: rgba(29, 41, 34, 0.6);
+}
+
+.detalhes-corpo {
+  display: grid;
+  grid-template-columns: 115px 1fr;
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.detalhes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detalhes-lista dt {
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.detalhes-lista dd {
+  font-weight: 600;
+}
+
+.detalhes-texto {
+  font-size: 16px;
+}
+
+@media (max-width: 760px) {
+  /* No celular, a janela sobe de baixo, como na página Nova resenha */
+  .janela-detalhes {
+    width: 100%;
+    max-width: 100%;
+    margin: auto 0 0;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .detalhes-corpo {
+    grid-template-columns: 90px 1fr;
+    gap: 15px;
+  }
+}

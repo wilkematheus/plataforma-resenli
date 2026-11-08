@@ -155,6 +155,14 @@ function criarCardResenha(resenha) {
         <p class="livro-autor">${autor}</p>
         ${renderizarEstrelas(resenha.nota)}
         <blockquote class="resenha-texto">“${escaparHTML(resenha.texto)}”</blockquote>
+        <div class="avaliacao-acoes">
+          <button class="botao-texto" type="button" data-acao="detalhes" aria-label="Ver detalhes da resenha de ${livro}">
+            Ver detalhes →
+          </button>
+          <button class="botao-texto botao-perigo" type="button" data-acao="excluir" aria-label="Excluir a resenha de ${livro}">
+            Excluir
+          </button>
+        </div>
       </div>
     </article>
   `;
@@ -275,7 +283,97 @@ function ordenarResenhas(lista, criterio) {
 }
 
 
-/* ---------- 6. CONTROLE DA TELA ---------- */
+/* ---------- 6. FUNÇÕES OBRIGATÓRIAS: VISUALIZAR DETALHES E EXCLUIR ---------- */
+
+// Abre a janela com todas as informações da resenha
+function visualizarResenha(id) {
+  const resenha = buscarResenhaPorId(id);
+
+  if (!resenha) {
+    mostrarAviso("Resenha não encontrada.");
+    return;
+  }
+
+  const livro = escaparHTML(resenha.livro);
+  const autor = escaparHTML(resenha.autor);
+
+  document.getElementById("detalhes-titulo").textContent = resenha.livro;
+  document.getElementById("detalhes-conteudo").innerHTML = `
+    <div class="detalhes-corpo">
+      <figure class="capa-livro">
+        <div class="capa ${escaparHTML(resenha.capa)}" role="img" aria-label="Capa do livro ${livro}">
+          <span class="capa-marca" aria-hidden="true">R</span>
+          <strong class="capa-titulo">${livro}</strong>
+          <small class="capa-autor">${autor}</small>
+        </div>
+      </figure>
+      <dl class="detalhes-lista">
+        <div>
+          <dt>Autor</dt>
+          <dd>${autor}</dd>
+        </div>
+        <div>
+          <dt>Sua nota</dt>
+          <dd>${renderizarEstrelas(resenha.nota)}</dd>
+        </div>
+        <div>
+          <dt>Avaliado em</dt>
+          <dd><time datetime="${escaparHTML(resenha.data)}">${formatarData(resenha.data)}</time></dd>
+        </div>
+      </dl>
+    </div>
+    <blockquote class="resenha-texto detalhes-texto">“${escaparHTML(resenha.texto)}”</blockquote>
+  `;
+
+  // showModal() deixa o resto da página inacessível até fechar
+  document.getElementById("janela-detalhes").showModal();
+}
+
+// Fecha a janela de detalhes (o navegador devolve o foco ao botão que a abriu)
+function fecharDetalhes() {
+  document.getElementById("janela-detalhes").close();
+}
+
+// Pede confirmação e remove a resenha do array
+function excluirResenha(id) {
+  const resenha = buscarResenhaPorId(id);
+
+  if (!resenha) {
+    mostrarAviso("Resenha não encontrada.");
+    return;
+  }
+
+  const confirmou = confirm(`Excluir a resenha de "${resenha.livro}"?\nEssa ação não pode ser desfeita.`);
+  if (!confirmou) {
+    return;
+  }
+
+  // Mantém todas as resenhas, menos a excluída
+  resenhas = resenhas.filter((item) => item.id !== resenha.id);
+
+  atualizarTela();
+  mostrarAviso("Resenha excluída.");
+}
+
+// Um único "ouvinte" na lista: descobre qual botão foi clicado e em qual card
+function tratarCliqueCard(evento) {
+  const botao = evento.target.closest("[data-acao]");
+  if (!botao) {
+    return;
+  }
+
+  const id = botao.closest("[data-id]").dataset.id;
+  const acao = botao.dataset.acao;
+
+  if (acao === "detalhes") {
+    visualizarResenha(id);
+  } else if (acao === "excluir") {
+    excluirResenha(id);
+  }
+}
+
+
+/* ---------- 7. CONTROLE DA TELA ---------- */
 
 // Aplica pesquisa → filtro → ordem e redesenha a lista.
 // Deve ser chamada depois de qualquer mudança nas resenhas.
@@ -298,6 +396,18 @@ function configurarEventos() {
   document.getElementById("pesquisa-resenhas").addEventListener("input", atualizarTela);
   document.getElementById("filtro-nota").addEventListener("change", atualizarTela);
   document.getElementById("ordem-resenhas").addEventListener("change", atualizarTela);
+
+  // Botões dentro dos cards (Ver detalhes, Excluir)
+  document.getElementById("lista-resenhas").addEventListener("click", tratarCliqueCard);
+
+  // Janela de detalhes: botão X e clique no fundo escuro fecham (Esc já fecha sozinho)
+  const janelaDetalhes = document.getElementById("janela-detalhes");
+  document.getElementById("fechar-detalhes").addEventListener("click", fecharDetalhes);
+  janelaDetalhes.addEventListener("click", (evento) => {
+    if (evento.target === janelaDetalhes) {
+      fecharDetalhes();
+    }
+  });
 }
 
 // Ponto de partida: roda quando a página carrega
