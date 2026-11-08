@@ -13,6 +13,9 @@
 
 const VERSAO_DADOS = 1;
 
+// Quantos livros do Google Books cada conta pode guardar (evita encher o armazenamento)
+const MAX_LIVROS_EXTERNOS = 200;
+
 // Funções que cada página registra para se redesenhar quando os dados mudam em outra aba
 const aoMudarDados = [];
 
@@ -39,6 +42,7 @@ function resenhaSalvaValida(item) {
     typeof item.livro === "string" &&
     typeof item.autor === "string" &&
     typeof item.capa === "string" &&
+    (item.livroId === undefined || typeof item.livroId === "string") &&
     Number.isInteger(item.nota) && item.nota >= 1 && item.nota <= 5 &&
     textoComLimite(item.texto, LIMITE_TEXTO) &&
     typeof item.data === "string" && DATA_ISO.test(item.data)
@@ -90,6 +94,7 @@ function sanitizarDados(bruto) {
     resenhas: [],
     statusLeitura: {},
     minhaLista: [],
+    livrosExternos: {},
     interacoes: { curtidas: [], salvos: [], comentarios: comentariosSalvosValidos(null, idsComunidade) },
   };
 
@@ -97,32 +102,57 @@ function sanitizarDados(bruto) {
     return vazio;
   }
 
+  // Livros do Google Books guardados: cada um é limpo como se tivesse acabado de chegar da API
+  const externos = {};
+  const brutoExternos = bruto.livrosExternos !== null && typeof bruto.livrosExternos === "object" ? bruto.livrosExternos : {};
+  for (const chave of Object.keys(brutoExternos)) {
+    if (Object.keys(externos).length >= MAX_LIVROS_EXTERNOS) {
+      break;
+    }
+
+    const limpo = limparLivroExterno({ ...brutoExternos[chave], id: chave });
+    // Um id igual ao de um livro do catálogo fixo é descartado: o catálogo vence
+    if (limpo && !livros.some((livro) => livro.id === limpo.id)) {
+      externos[limpo.id] = limpo;
+    }
+  }
+
+  // O livro existe? (catálogo fixo ou Google Books guardado)
+  const existeLivro = (id) => livros.some((livro) => livro.id === id) || Object.prototype.hasOwnProperty.call(externos, id);
+
   // Resenhas: sem repetir id nem livro (a regra é uma resenha por livro)
   const idsVistos = new Set();
   const livrosVistos = new Set();
-  const listaResenhas = (Array.isArray(bruto.resenhas) ? bruto.resenhas : []).filter((item) => {
-    if (!resenhaSalvaValida(item) || idsVistos.has(item.id) || livrosVistos.has(item.livro)) {
-      return false;
-    }
-    idsVistos.add(item.id);
-    livrosVistos.add(item.livro);
-    return true;
-  });
+  const listaResenhas = (Array.isArray(bruto.resenhas) ? bruto.resenhas : [])
+    .filter((item) => {
+      if (!resenhaSalvaValida(item) || idsVistos.has(item.id) || livrosVistos.has(item.livro)) {
+        return false;
+      }
+      idsVistos.add(item.id);
+      livrosVistos.add(item.livro);
+      return true;
+    })
+    .map((item) => {
+      // Resenhas antigas não têm o id do livro: descobre pelo título (só dá certo para o catálogo fixo)
+      const doCatalogo = buscarLivroPorTitulo(item.livro);
+      const livroId = item.livroId && existeLivro(item.livroId) ? item.livroId : doCatalogo ? doCatalogo.id : "";
 
-  // Status: só livros do catálogo e status que existem
+      return { id: item.id, livroId, livro: item.livro, autor: item.autor, capa: item.capa, nota: item.nota, texto: item.texto, data: item.data };
+    });
+
+  // Status: só livros que existem e status que existem
   const status = {};
   const salvos = bruto.statusLeitura !== null && typeof bruto.statusLeitura === "object" ? bruto.statusLeitura : {};
   for (const id of Object.keys(salvos)) {
-    if (buscarLivro(id) && ROTULOS_STATUS[salvos[id]]) {
+    if (existeLivro(id) && ROTULOS_STATUS[salvos[id]]) {
       status[id] = salvos[id];
     }
   }
 
   // Quem tem resenha já leu o livro
   for (const resenha of listaResenhas) {
-    const livro = buscarLivroPorTitulo(resenha.livro);
-    if (livro) {
-      status[livro.id] = "lido";
+    if (resenha.livroId) {
+      status[resenha.livroId] = "lido";
     }
   }
 
@@ -142,6 +172,7 @@ function sanitizarDados(bruto) {
     resenhas: listaResenhas,
     statusLeitura: status,
     minhaLista: lista,
+    livrosExternos: externos,
     interacoes: {
       curtidas: listaDeIds(brutoInteracoes.curtidas, idsComunidade),
       salvos: listaDeIds(brutoInteracoes.salvos, idsComunidade),
@@ -168,6 +199,7 @@ function carregarDadosDoUsuario() {
   resenhas = dados.resenhas;
   statusLeitura = dados.statusLeitura;
   minhaLista = dados.minhaLista;
+  livrosExternos = dados.livrosExternos;
   interacoes = dados.interacoes;
 }
 
@@ -183,6 +215,7 @@ function salvarDados() {
     resenhas,
     statusLeitura,
     minhaLista,
+    livrosExternos,
     interacoes,
   });
 

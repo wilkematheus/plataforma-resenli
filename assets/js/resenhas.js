@@ -56,18 +56,12 @@ function criarCardResenha(resenha) {
   const autor = escaparHTML(resenha.autor);
 
   // O título leva para a página do livro (quando ele está no catálogo)
-  const doCatalogo = buscarLivroPorTitulo(resenha.livro);
+  const doCatalogo = buscarLivro(resenha.livroId);
   const titulo = doCatalogo ? `<a class="link-titulo" href="livro.html?id=${doCatalogo.id}">${livro}</a>` : livro;
 
   return `
     <article class="card card-avaliacao" data-id="${resenha.id}">
-      <figure class="capa-livro">
-        <div class="capa ${escaparHTML(resenha.capa)}" role="img" aria-label="Capa do livro ${livro}">
-          <span class="capa-marca" aria-hidden="true">R</span>
-          <strong class="capa-titulo">${livro}</strong>
-          <small class="capa-autor">${autor}</small>
-        </div>
-      </figure>
+      ${criarCapa(livroDaResenha(resenha))}
       <div class="avaliacao-info">
         <time class="data-avaliacao" datetime="${escaparHTML(resenha.data)}">
           Avaliado em ${formatarData(resenha.data)}
@@ -248,13 +242,7 @@ function visualizarResenha(id) {
   document.getElementById("detalhes-titulo").textContent = resenha.livro;
   document.getElementById("detalhes-conteudo").innerHTML = `
     <div class="detalhes-corpo">
-      <figure class="capa-livro">
-        <div class="capa ${escaparHTML(resenha.capa)}" role="img" aria-label="Capa do livro ${livro}">
-          <span class="capa-marca" aria-hidden="true">R</span>
-          <strong class="capa-titulo">${livro}</strong>
-          <small class="capa-autor">${autor}</small>
-        </div>
-      </figure>
+      ${criarCapa(livroDaResenha(resenha))}
       <dl class="detalhes-lista">
         <div>
           <dt>Autor</dt>
@@ -305,7 +293,7 @@ function excluirResenha(id) {
 // Devolve a resenha excluída para o lugar onde estava
 function desfazerExclusao(resenha, posicao) {
   // Se o livro foi avaliado de novo nesse meio tempo, restaurar criaria duas resenhas do mesmo livro
-  if (resenhas.some((item) => item.livro === resenha.livro)) {
+  if (resenhas.some((item) => mesmoLivro(item, resenha))) {
     mostrarAviso(`Você já avaliou "${resenha.livro}" de novo, então não dá para restaurar a antiga.`);
     return;
   }
@@ -350,6 +338,7 @@ function cadastrarResenha(dados) {
 
   resenhas.push({
     id: gerarId(),
+    livroId: livro.id,
     livro: livro.titulo,
     autor: livro.autor,
     capa: livro.capa,
@@ -380,6 +369,7 @@ function atualizarResenha(id, dados) {
   const resenha = buscarResenhaPorId(id);
   const livro = buscarLivro(dados.livroId);
 
+  resenha.livroId = livro.id;
   resenha.livro = livro.titulo;
   resenha.autor = livro.autor;
   resenha.capa = livro.capa;
@@ -427,16 +417,24 @@ function enviarFormulario(evento) {
 
 /* ---------- 7. FUNÇÕES DE APOIO: FORMULÁRIO ---------- */
 
-// Cria as opções do campo "Qual livro você leu?" a partir do catálogo
+// Cria as opções do campo "Qual livro você leu?": catálogo fixo + livros do Google Books guardados.
+// Pode ser chamada de novo (ex.: outra aba guardou um livro): mantém só a primeira opção ("Selecione...").
 function preencherSelectLivros() {
   const select = document.getElementById("campo-livro");
+  const escolhido = select.value;
 
-  for (const livro of livros) {
+  while (select.options.length > 1) {
+    select.remove(1);
+  }
+
+  for (const livro of todosOsLivros()) {
     const opcao = document.createElement("option");
     opcao.value = livro.id;
     opcao.textContent = `${livro.titulo} — ${livro.autor}`;
     select.appendChild(opcao);
   }
+
+  select.value = escolhido;
 }
 
 // Abre a janela vazia (cadastrar) ou preenchida (editar)
@@ -492,7 +490,7 @@ function tentarFecharFormulario() {
 
 // Coloca os dados de uma resenha nos campos
 function preencherFormulario(resenha) {
-  const livro = buscarLivroPorTitulo(resenha.livro);
+  const livro = buscarLivro(resenha.livroId);
   const formulario = document.getElementById("formulario-resenha");
 
   document.getElementById("campo-livro").value = livro ? livro.id : "";
@@ -535,7 +533,7 @@ function validarResenha(dados) {
     // Um livro só pode ter uma resenha (a própria resenha em edição não conta)
     const livro = buscarLivro(dados.livroId);
     const jaAvaliado = resenhas.some(
-      (resenha) => resenha.livro === livro.titulo && resenha.id !== idEmEdicao
+      (resenha) => mesmoLivro(resenha, { livroId: livro.id, livro: livro.titulo }) && resenha.id !== idEmEdicao
     );
 
     if (jaAvaliado) {
@@ -731,7 +729,10 @@ function iniciar() {
   abrirFormularioDaURL();
 
   // Se outra aba mudar as resenhas, esta lista acompanha
-  aoMudarDados.push(() => atualizarTela());
+  aoMudarDados.push(() => {
+    preencherSelectLivros();
+    atualizarTela();
+  });
 }
 
 // Links de outras páginas: ?avaliar=<livro> abre o formulário com o livro escolhido
@@ -753,7 +754,7 @@ function abrirFormularioDaURL() {
     return;
   }
 
-  const existente = resenhas.find((resenha) => resenha.livro === livro.titulo);
+  const existente = resenhaDoLivro(livro);
   if (existente) {
     abrirFormulario(existente);
     return;

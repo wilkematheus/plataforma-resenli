@@ -108,6 +108,15 @@
         <!-- Montado por renderizarLivro() em assets/js/livro.js -->
         <section class="livro-pagina" id="livro-pagina" aria-live="polite"></section>
 
+        <section class="livro-sobre" id="livro-sobre" aria-labelledby="titulo-sobre" hidden>
+          <h2 id="titulo-sobre" class="titulo-secao">Sobre o livro</h2>
+          <p class="livro-sobre-texto" id="livro-sobre-texto"></p>
+          <p class="livro-sobre-fonte">
+            Descrição do Google Books.
+            <a class="link-forte" id="livro-sobre-link" target="_blank" rel="noopener noreferrer" hidden>Ver no Google Books →</a>
+          </p>
+        </section>
+
         <section class="livro-resenhas" id="livro-resenhas" aria-labelledby="titulo-resenhas-livro" hidden>
           <header class="cabecalho-secao">
             <div>
@@ -157,6 +166,8 @@
     <script src="assets/js/conta.js"></script>
     <script src="assets/js/persistencia.js"></script>
     <script src="assets/js/layout.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/googlebooks.js"></script>
     <script src="assets/js/livro.js"></script>
   </body>
 </html>

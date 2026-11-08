@@ -144,6 +144,25 @@
           <ul class="grade-livros" id="grade-livros"></ul>
           <p class="lista-vazia" id="sem-resultados" hidden></p>
         </section>
+
+        <!-- Resultados do Google Books: montados por assets/js/pesquisar.js (só aparecem quando há uma busca) -->
+        <section class="resultados resultados-google" id="secao-google" aria-labelledby="titulo-google" hidden>
+          <header class="cabecalho-secao">
+            <div>
+              <p class="sobretitulo">Google Books</p>
+              <h2 id="titulo-google" class="titulo-secao">Mais livros da internet</h2>
+            </div>
+          </header>
+
+          <p class="google-status" id="google-status" role="status" aria-live="polite"></p>
+          <ul class="grade-livros" id="grade-google"></ul>
+
+          <div class="google-acoes">
+            <button class="botao botao-secundario" type="button" id="google-tentar" hidden>Tentar de novo</button>
+            <button class="botao botao-secundario" type="button" id="google-mais" hidden>Carregar mais</button>
+          </div>
+          <small class="google-credito">Resultados fornecidos pela API do Google Books.</small>
+        </section>
       </main>
     </div>
 
@@ -184,6 +203,8 @@
     <script src="assets/js/conta.js"></script>
     <script src="assets/js/persistencia.js"></script>
     <script src="assets/js/layout.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/googlebooks.js"></script>
     <script src="assets/js/pesquisar.js"></script>
   </body>
 </html>

@@ -2036,3 +2036,98 @@ html[data-tema="escuro"] .janela-formulario::backdrop {
     width: 140px;
   }
 }
+
+
+/* ---------- 19. GOOGLE BOOKS ---------- */
+
+/* Imagem da capa por cima da capa desenhada (se não carregar, a desenhada aparece) */
+.capa-imagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: var(--creme);
+}
+
+/* Livro sem nota ("Sem avaliações") */
+.estrelas-vazia .nota-media {
+  margin-left: 0;
+  color: var(--cinza);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Seção de resultados do Google Books na página Pesquisar */
+.resultados-google {
+  margin-top: 8px;
+}
+
+.google-status {
+  margin-bottom: 16px;
+  color: var(--cinza);
+  font-size: 14px;
+}
+
+.google-status:empty {
+  display: none;
+}
+
+.google-status-erro {
+  padding: 14px 16px;
+  border: 1px solid var(--ferrugem);
+  border-radius: 10px;
+  color: var(--ferrugem);
+  font-weight: 600;
+}
+
+/* Enquanto busca, os cards antigos ficam apagados */
+.grade-livros[aria-busy="true"] {
+  opacity: 0.5;
+}
+
+.google-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.google-credito {
+  display: block;
+  margin-top: 14px;
+  color: var(--cinza);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Página do livro: descrição e mensagens */
+.livro-pagina .livro-mensagem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  grid-column: 1 / -1;
+}
+
+.livro-sobre {
+  margin: 36px 0 8px;
+  max-width: 760px;
+}
+
+.livro-sobre-texto {
+  margin: 10px 0 12px;
+  color: var(--cinza);
+  line-height: 1.7;
+}
+
+.livro-sobre-fonte {
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.livro-sobre-fonte .link-forte {
+  margin-left: 6px;
+}

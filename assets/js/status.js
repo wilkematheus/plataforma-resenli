@@ -29,6 +29,12 @@ function definirStatus(livroId, status) {
 
   if (status === "") {
     delete statusLeitura[livroId];
+
+    // Livro do Google Books que não está mais em lugar nenhum não precisa continuar guardado
+    const temResenha = resenhas.some((resenha) => resenha.livroId === livroId);
+    if (!temResenha && Object.prototype.hasOwnProperty.call(livrosExternos, livroId)) {
+      delete livrosExternos[livroId];
+    }
   } else {
     statusLeitura[livroId] = status;
   }

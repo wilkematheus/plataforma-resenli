@@ -111,6 +111,10 @@ let minhaLista = [];
 // Resenhas escritas pela pessoa (Minhas avaliações)
 let resenhas = [];
 
+// Livros que vieram do Google Books e a pessoa guardou (na lista ou numa resenha),
+// no mesmo formato do catálogo: { id: livro }. Os do catálogo fixo não entram aqui.
+let livrosExternos = {};
+
 // O que a pessoa fez nas resenhas da comunidade (Início):
 // curtidas e salvas = ids das resenhas; comentarios = { idDaResenha: [ { id, texto, data } ] }
 let interacoes = { curtidas: [], salvos: [], comentarios: {} };

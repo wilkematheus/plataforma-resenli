@@ -37,7 +37,7 @@ function criarAcaoStatus(livro, status) {
   }
 
   // Lido: leva a avaliar ou a rever a avaliação
-  const avaliado = resenhas.some((resenha) => resenha.livro === livro.titulo);
+  const avaliado = Boolean(resenhaDoLivro(livro));
 
   return avaliado
     ? '<a class="link-forte" href="minhas-avaliacoes.html">Ver minha avaliação →</a>'
@@ -118,15 +118,22 @@ function calcularResumo() {
   const total = livrosParaLer.length;
 
   let paginas = 0;
+  let semPaginas = 0;
   for (const livro of livrosParaLer) {
     paginas += livro.paginas;
+    // Livros do Google Books nem sempre informam o número de páginas
+    if (!livro.paginas) {
+      semPaginas += 1;
+    }
   }
+
+  const aviso = semPaginas > 0 ? ` (sem contar ${semPaginas} ${plural(semPaginas, "livro sem", "livros sem")} número de páginas)` : "";
 
   document.getElementById("resumo-total").textContent = total;
   document.getElementById("resumo-texto").textContent = `${plural(total, "livro", "livros")} para ler`;
   document.getElementById("resumo-paginas").textContent = formatarMilhar(paginas);
   document.getElementById("resumo-paginas-texto").textContent =
-    `${plural(paginas, "página esperando", "páginas esperando")} por você`;
+    `${plural(paginas, "página esperando", "páginas esperando")} por você${aviso}`;
 }
 
 // Tudo que depende da lista, depois de qualquer mudança
