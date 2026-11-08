@@ -2131,3 +2131,74 @@ html[data-tema="escuro"] .janela-formulario::backdrop {
 .livro-sobre-fonte .link-forte {
   margin-left: 6px;
 }
+
+
+/* ---------- 20. BUSCA DE LIVROS NO FORMULÁRIO DE RESENHA ---------- */
+
+.busca-livro-linha {
+  display: flex;
+  gap: 8px;
+}
+
+.busca-livro-linha .campo-entrada {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Lista de resultados: rola dentro da janela em vez de empurrar o resto do formulário */
+.resultados-livro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.resultados-livro:empty {
+  display: none;
+}
+
+.resultado-livro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  background-color: var(--cartao);
+  text-align: left;
+}
+
+.resultado-livro:hover,
+.resultado-livro:focus-visible {
+  border-color: var(--verde-texto);
+  background-color: var(--creme);
+}
+
+/* Miniatura: a capa desenhada (classe capa-N) serve de fundo se a imagem não carregar */
+.resultado-capa {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 2px 4px 4px 2px;
+}
+
+.resultado-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.resultado-info strong {
+  font-size: 14px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.resultado-info small {
+  color: var(--cinza);
+  font-size: 12px;
+}

@@ -247,6 +247,24 @@
           <small class="campo-erro" id="erro-livro"></small>
         </div>
 
+        <!-- Busca no Google Books: o livro escolhido aqui entra no seletor acima. Montada por resenhas.js -->
+        <div class="campo busca-livro">
+          <label class="campo-rotulo" for="campo-busca-livro">Não está na lista? Busque no Google Books</label>
+          <div class="busca-livro-linha">
+            <input
+              class="campo-entrada"
+              id="campo-busca-livro"
+              type="search"
+              placeholder="Título ou autor do livro"
+              autocomplete="off"
+              aria-describedby="status-busca-livro"
+            />
+            <button class="botao botao-secundario" type="button" id="botao-busca-livro">Buscar</button>
+          </div>
+          <p class="google-status" id="status-busca-livro" role="status" aria-live="polite"></p>
+          <ul class="resultados-livro" id="resultados-livro" aria-label="Resultados do Google Books"></ul>
+        </div>
+
         <div class="campo">
           <fieldset class="notas" id="campo-nota" aria-describedby="erro-nota">
             <legend class="campo-rotulo">Como foi sua experiência?</legend>
@@ -308,6 +326,8 @@
     <script src="assets/js/conta.js"></script>
     <script src="assets/js/persistencia.js"></script>
     <script src="assets/js/layout.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/googlebooks.js"></script>
     <script src="assets/js/resenhas.js"></script>
   </body>
 </html>
