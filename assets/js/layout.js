@@ -52,11 +52,30 @@ function configurarSair() {
   }
 }
 
+// Outra aba entrou, saiu ou trocou de conta: esta página acompanha
+function tratarMudancaDeSessao(evento) {
+  if (evento.key !== CHAVE_SESSAO && evento.key !== null) {
+    return;
+  }
+
+  const nova = obterSessao();
+
+  if (!nova) {
+    window.location.replace("entrar.html");
+  } else if (!sessaoAtual || nova.email !== sessaoAtual.email) {
+    // Outra conta no mesmo navegador: recarrega para mostrar os dados dela, não os desta
+    window.location.reload();
+  }
+}
+
 function iniciarLayout() {
   protegerPagina();
   preencherPerfil();
   atualizarContadorLista();
   configurarSair();
+
+  window.addEventListener("storage", tratarMudancaDeSessao);
+  aoMudarDados.push(atualizarContadorLista);
 }
 
 iniciarLayout();

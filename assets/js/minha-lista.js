@@ -192,6 +192,9 @@ function iniciarMinhaLista() {
 
   atualizarPagina();
 
+  // Se outra aba mudar a lista ou os status, esta página acompanha
+  aoMudarDados.push(atualizarPagina);
+
   for (const aba of document.querySelectorAll(".aba")) {
     aba.addEventListener("click", () => mudarAba(aba.dataset.status));
   }

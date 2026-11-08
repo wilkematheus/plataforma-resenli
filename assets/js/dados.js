@@ -1,16 +1,23 @@
 /* ==========================================================
-   RESENLI — Dados de exemplo (compartilhados por todas as páginas)
-   Ainda sem JSON: cada página carrega estes valores iniciais
-   e as mudanças ficam só em memória até recarregar.
+   RESENLI — Dados (compartilhados por todas as páginas)
+
+   O catálogo de livros e as resenhas da comunidade são fixos.
+   Os dados PESSOAIS (resenhas, status de leitura, lista, curtidas,
+   comentários) começam vazios aqui e são preenchidos por
+   persistencia.js com o que cada conta salvou no navegador.
    ========================================================== */
 
 
-/* ---------- 1. META DE LEITURA ---------- */
+/* ---------- 1. META E LIMITES ---------- */
 
 // O usuário logado vem da sessão (veja conta.js e layout.js)
 
 // Quantos livros o usuário quer ler no ano (página Início)
 const metaLeitura = 12;
+
+// Tamanhos máximos de texto (os mesmos do maxlength dos campos no HTML)
+const LIMITE_TEXTO = 420;
+const LIMITE_COMENTARIO = 280;
 
 
 /* ---------- 2. CATÁLOGO DE LIVROS ---------- */
@@ -92,64 +99,24 @@ const livros = [
 ];
 
 
-/* ---------- 3. MINHA LISTA E STATUS DE LEITURA ---------- */
+/* ---------- 3. DADOS DA PESSOA LOGADA (carregados por persistencia.js) ---------- */
 
-// Status de cada livro: "quero-ler", "lendo" ou "lido" (sem status = livro sem relação com o usuário).
-// Os livros avaliados abaixo já aparecem como lidos.
-let statusLeitura = {
-  "torto-arado": "lido",
-  "quarto-de-despejo": "lido",
-  "addie-larue": "lido",
-  "tudo-e-rio": "quero-ler",
-  "avesso-da-pele": "lendo",
-  "cem-anos-de-solidao": "quero-ler",
-};
+// Status de cada livro: "quero-ler", "lendo" ou "lido". Livro sem status não aparece aqui.
+let statusLeitura = {};
 
 // Ids dos livros que ainda faltam ler (quero ler + lendo), na ordem da estante.
 // Um livro lido sai daqui automaticamente.
-let minhaLista = ["tudo-e-rio", "avesso-da-pele", "cem-anos-de-solidao"];
+let minhaLista = [];
+
+// Resenhas escritas pela pessoa (Minhas avaliações)
+let resenhas = [];
+
+// O que a pessoa fez nas resenhas da comunidade (Início):
+// curtidas e salvas = ids das resenhas; comentarios = { idDaResenha: [ { id, texto, data } ] }
+let interacoes = { curtidas: [], salvos: [], comentarios: {} };
 
 
-/* ---------- 4. RESENHAS DO USUÁRIO (Minhas avaliações) ---------- */
-
-let resenhas = [
-  {
-    id: 1,
-    livro: "Torto Arado",
-    autor: "Itamar Vieira Junior",
-    capa: "capa-1",
-    nota: 5,
-    texto:
-      "Uma história que parece nascer da própria terra. Itamar escreve com uma delicadeza imensa sobre " +
-      "pertencimento, memória e tudo aquilo que herdamos sem escolher.",
-    data: "2025-03-12",
-  },
-  {
-    id: 2,
-    livro: "Quarto de Despejo",
-    autor: "Carolina Maria de Jesus",
-    capa: "capa-4",
-    nota: 5,
-    texto:
-      "Um livro indispensável. A voz de Carolina é direta, viva e impossível de ignorar. Terminei querendo " +
-      "conversar sobre cada página.",
-    data: "2025-02-20",
-  },
-  {
-    id: 3,
-    livro: "A Vida Invisível de Addie LaRue",
-    autor: "V. E. Schwab",
-    capa: "capa-3",
-    nota: 4,
-    texto:
-      "A premissa é maravilhosa e a atmosfera acompanha. Foi uma leitura lenta para mim, mas daquelas que " +
-      "continuam voltando à cabeça muitos dias depois.",
-    data: "2024-11-05",
-  },
-];
-
-
-/* ---------- 5. RESENHAS DA COMUNIDADE (Início e página do livro) ---------- */
+/* ---------- 4. RESENHAS DA COMUNIDADE (Início e página do livro) ---------- */
 
 // "minutosAtras" vira uma data real quando a página carrega,
 // para o "Há 18 minutos" continuar fazendo sentido em qualquer dia.

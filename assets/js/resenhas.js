@@ -1,7 +1,7 @@
 /* ==========================================================
    RESENLI — Resenhas (página Minhas avaliações)
    Os dados iniciais ficam em dados.js e as funções de
-   formatação em utils.js. Tudo só em memória (sem JSON).
+   formatação em utils.js. O que é salvo vem de persistencia.js.
    ========================================================== */
 
 
@@ -9,9 +9,6 @@
 
 // Guarda o id da resenha que está sendo editada (null = cadastrando uma nova)
 let idEmEdicao = null;
-
-// Limite de caracteres do texto da resenha (o mesmo do maxlength no HTML)
-const LIMITE_TEXTO = 420;
 
 // Quantas resenhas aparecem de cada vez (o resto vem em "Mostrar mais")
 const POR_PAGINA = 5;
@@ -296,6 +293,7 @@ function excluirResenha(id) {
 
   // splice tira a resenha e devolve o que foi removido
   const [removida] = resenhas.splice(posicao, 1);
+  salvarDados();
 
   atualizarTela();
   mostrarAviso(`Resenha de "${removida.livro}" excluída.`, {
@@ -318,6 +316,7 @@ function desfazerExclusao(resenha, posicao) {
   }
 
   resenhas.splice(Math.min(posicao, resenhas.length), 0, resenha);
+  salvarDados();
 
   atualizarTela();
   mostrarAviso("Resenha restaurada.");
@@ -361,6 +360,7 @@ function cadastrarResenha(dados) {
 
   // Avaliar significa que o livro foi lido: ele sai da lista de leitura sozinho
   definirStatus(livro.id, "lido");
+  salvarDados();
 }
 
 // Abre o formulário já preenchido com a resenha escolhida
@@ -387,6 +387,7 @@ function atualizarResenha(id, dados) {
   resenha.texto = dados.texto;
 
   definirStatus(livro.id, "lido");
+  salvarDados();
 }
 
 // Envio do formulário: valida e decide entre cadastrar ou atualizar
@@ -728,6 +729,9 @@ function iniciar() {
   configurarEventos();
   atualizarTela();
   abrirFormularioDaURL();
+
+  // Se outra aba mudar as resenhas, esta lista acompanha
+  aoMudarDados.push(() => atualizarTela());
 }
 
 // Links de outras páginas: ?avaliar=<livro> abre o formulário com o livro escolhido

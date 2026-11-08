@@ -196,6 +196,12 @@ function iniciarLivro() {
   renderizarLivro(livroAtual);
   renderizarResenhasDoLivro(livroAtual);
 
+  // Se outra aba mudar o status ou as resenhas, esta página acompanha
+  aoMudarDados.push(() => {
+    renderizarLivro(livroAtual);
+    renderizarResenhasDoLivro(livroAtual);
+  });
+
   document.getElementById("livro-pagina").addEventListener("change", (evento) => {
     if (evento.target.id === "status-leitura") {
       mudarStatusLivro(evento.target.value);

@@ -169,6 +169,12 @@ function iniciarPesquisa() {
 
   const termo = document.getElementById("campo-pesquisa").value;
   renderizarLivros(filtrarLivros(termo), termo);
+
+  // Se outra aba mudar a lista, os botões desta página acompanham (sem perder a busca)
+  aoMudarDados.push(() => {
+    const termoAtual = document.getElementById("campo-pesquisa").value;
+    renderizarLivros(filtrarLivros(termoAtual), termoAtual);
+  });
 }
 
 iniciarPesquisa();

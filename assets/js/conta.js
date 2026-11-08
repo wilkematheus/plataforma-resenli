@@ -1,8 +1,8 @@
 /* ==========================================================
    RESENLI — Contas e sessão (compartilhado por todas as páginas)
 
-   Único ponto do programa que usa localStorage: guarda as contas
-   criadas e quem está logado. Resenhas e lista seguem em memória.
+   Guarda no localStorage as contas criadas e quem está logado.
+   Os dados pessoais de cada conta ficam em persistencia.js.
 
    Atenção: isto é um protótipo. Sem servidor, tudo fica no navegador
    e qualquer pessoa com acesso a ele consegue ler esses dados.

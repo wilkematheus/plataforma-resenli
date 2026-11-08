@@ -38,6 +38,8 @@ function definirStatus(livroId, status) {
   } else if (!deveEstarNaLista && naLista) {
     minhaLista = minhaLista.filter((id) => id !== livroId);
   }
+
+  salvarDados();
 }
 
 // Ids dos livros com o status pedido

@@ -9,9 +9,6 @@
 // Resenhas exibidas no feed (montadas em montarFeed())
 let feed = [];
 
-// Tamanho máximo de um comentário (o mesmo do maxlength do campo)
-const LIMITE_COMENTARIO = 280;
-
 // Dá um id único a cada comentário novo
 let contadorComentarios = 0;
 
@@ -70,26 +67,41 @@ function atualizarMetaLeitura() {
 function montarFeed() {
   const agora = Date.now();
 
-  feed = resenhasComunidade.map((item) => ({
-    id: item.id,
-    autor: item.autor,
-    avatar: item.avatar,
-    livro: buscarLivro(item.livroId),
-    nota: item.nota,
-    texto: item.texto,
-    data: new Date(agora - item.minutosAtras * 60000),
-    etiqueta: item.etiqueta,
-    curtidas: item.curtidas,
-    // Cópia dos comentários: os da pessoa logada são acrescentados só no feed
-    comentarios: item.comentarios.map((comentario) => ({
+  feed = resenhasComunidade.map((item) => {
+    const curtido = interacoes.curtidas.includes(item.id);
+
+    // Os comentários das outras pessoas são fixos; os da pessoa logada vêm do que ela salvou
+    const deOutros = item.comentarios.map((comentario) => ({
       ...comentario,
       data: new Date(agora - comentario.minutosAtras * 60000),
       meu: false,
-    })),
-    comentariosAbertos: false,
-    curtido: false,
-    salvo: false,
-  }));
+    }));
+    const meus = (interacoes.comentarios[item.id] || []).map((comentario) => ({
+      id: comentario.id,
+      autor: usuario.nome,
+      avatar: "avatar-perfil",
+      texto: comentario.texto,
+      data: new Date(comentario.data),
+      meu: true,
+    }));
+
+    return {
+      id: item.id,
+      autor: item.autor,
+      avatar: item.avatar,
+      livro: buscarLivro(item.livroId),
+      nota: item.nota,
+      texto: item.texto,
+      data: new Date(agora - item.minutosAtras * 60000),
+      etiqueta: item.etiqueta,
+      // O número de curtidas já inclui a da própria pessoa, se ela curtiu
+      curtidas: item.curtidas + (curtido ? 1 : 0),
+      comentarios: [...deOutros, ...meus],
+      comentariosAbertos: false,
+      curtido,
+      salvo: interacoes.salvos.includes(item.id),
+    };
+  });
 
   feed.sort((a, b) => b.data - a.data);
 }
@@ -228,6 +240,9 @@ function curtirResenha(item) {
   item.curtido = !item.curtido;
   item.curtidas += item.curtido ? 1 : -1;
 
+  alternarNaLista(interacoes.curtidas, item.id, item.curtido);
+  salvarDados();
+
   atualizarCardFeed(item, "curtir");
 }
 
@@ -235,8 +250,31 @@ function curtirResenha(item) {
 function salvarResenha(item) {
   item.salvo = !item.salvo;
 
+  alternarNaLista(interacoes.salvos, item.id, item.salvo);
+  salvarDados();
+
   atualizarCardFeed(item, "salvar");
   mostrarAviso(item.salvo ? "Resenha salva." : "Resenha removida dos salvos.");
+}
+
+// Põe o id na lista (ativo = true) ou tira dela (ativo = false), sem repetir
+function alternarNaLista(lista, id, ativo) {
+  const posicao = lista.indexOf(id);
+
+  if (ativo && posicao === -1) {
+    lista.push(id);
+  } else if (!ativo && posicao !== -1) {
+    lista.splice(posicao, 1);
+  }
+}
+
+// Guarda só os comentários da pessoa logada (os das outras pessoas são fixos)
+function guardarComentarios(item) {
+  interacoes.comentarios[item.id] = item.comentarios
+    .filter((comentario) => comentario.meu)
+    .map((comentario) => ({ id: comentario.id, texto: comentario.texto, data: comentario.data.toISOString() }));
+
+  salvarDados();
 }
 
 // Mostra ou esconde os comentários da resenha
@@ -260,13 +298,16 @@ function publicarComentario(item, formulario) {
   }
 
   item.comentarios.push({
-    id: `meu-${++contadorComentarios}`,
+    // Data em base 36 + contador: o id continua único depois de recarregar a página
+    id: `meu-${Date.now().toString(36)}-${++contadorComentarios}`,
     autor: usuario.nome,
     avatar: "avatar-perfil",
     texto,
     data: new Date(),
     meu: true,
   });
+
+  guardarComentarios(item);
 
   // O campo é esvaziado antes de redesenhar o card, para o rascunho não voltar
   campo.value = "";
@@ -277,6 +318,7 @@ function publicarComentario(item, formulario) {
 
 function excluirComentario(item, comentarioId) {
   item.comentarios = item.comentarios.filter((comentario) => comentario.id !== comentarioId);
+  guardarComentarios(item);
 
   atualizarCardFeed(item, "comentarios");
   mostrarAviso("Comentário excluído.");
@@ -327,6 +369,13 @@ function iniciarInicio() {
 
   montarFeed();
   renderizarFeed();
+  // Se outra aba mudar os dados (curtidas, comentários, livros lidos), esta página acompanha
+  aoMudarDados.push(() => {
+    atualizarMetaLeitura();
+    montarFeed();
+    renderizarFeed();
+  });
+
   document.getElementById("feed-resenhas").addEventListener("click", tratarCliqueFeed);
   document.getElementById("feed-resenhas").addEventListener("submit", tratarEnvioFeed);
 
