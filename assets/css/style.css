@@ -1632,3 +1632,12 @@ button {
   color: var(--ferrugem);
   font-weight: 700;
 }
+
+
+/* ---------- 14. AÇÕES DO FEED (Início) ---------- */
+
+/* Curtida e "Salvo" ativos (aria-pressed é trocado por inicio.js) */
+.acao[aria-pressed="true"] {
+  color: var(--ferrugem);
+  font-weight: 700;
+}

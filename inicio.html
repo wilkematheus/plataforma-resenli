@@ -104,19 +104,20 @@
       <main class="conteudo">
         <section class="boas-vindas" aria-labelledby="titulo-inicio">
           <div class="boas-vindas-texto">
-            <p class="sobretitulo">Terça, 12 de março</p>
-            <h1 id="titulo-inicio" class="titulo-grande">Boa tarde, Matheus.</h1>
+            <!-- Data e saudação são preenchidas por inicio.js -->
+            <p class="sobretitulo" id="data-hoje">Hoje</p>
+            <h1 id="titulo-inicio" class="titulo-grande">Olá!</h1>
             <p class="texto-apoio">O que a sua estante tem para contar hoje?</p>
           </div>
 
           <aside class="meta-leitura" aria-label="Meta de leitura">
             <span class="meta-rotulo">Meta de leitura</span>
             <strong class="meta-numero">
-              8
-              <small>de 12 livros</small>
+              <span id="meta-lidos">0</span>
+              <small id="meta-total">de 12 livros</small>
             </strong>
-            <progress class="meta-barra" value="8" max="12">8 de 12 livros</progress>
-            <small class="meta-nota">Você está indo muito bem</small>
+            <progress class="meta-barra" id="meta-barra" value="0" max="12">0 de 12 livros</progress>
+            <small class="meta-nota" id="meta-nota"></small>
           </aside>
         </section>
 
@@ -129,115 +130,8 @@
             <a class="link-forte" href="#todas-resenhas">Ver todas →</a>
           </header>
 
-          <article class="card card-resenha">
-            <header class="resenha-topo">
-              <span class="avatar avatar-1" aria-hidden="true">MC</span>
-              <div class="resenha-autor">
-                <strong class="resenha-nome">Marina Campos</strong>
-                <time class="resenha-tempo" datetime="2025-03-12T14:42">Há 18 minutos</time>
-              </div>
-              <span class="etiqueta">Mais comentada</span>
-            </header>
-
-            <div class="resenha-corpo">
-              <figure class="capa-livro">
-                <div class="capa capa-1" role="img" aria-label="Capa do livro Torto Arado">
-                  <span class="capa-marca" aria-hidden="true">R</span>
-                  <strong class="capa-titulo">Torto Arado</strong>
-                  <small class="capa-autor">Itamar Vieira Junior</small>
-                </div>
-              </figure>
-
-              <div class="resenha-info">
-                <p class="estrelas" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-                <h3 class="livro-titulo">Torto Arado</h3>
-                <p class="livro-autor">Itamar Vieira Junior</p>
-                <blockquote class="resenha-texto">
-                  Uma história que parece nascer da própria terra. Itamar escreve com uma delicadeza imensa sobre
-                  pertencimento, memória e tudo aquilo que herdamos sem escolher.
-                </blockquote>
-              </div>
-            </div>
-
-            <footer class="resenha-rodape">
-              <button class="acao" type="button" aria-label="Curtir resenha">♡ 248</button>
-              <a class="acao" href="#comentarios-torto-arado">32 comentários</a>
-              <button class="acao acao-salvar" type="button" aria-label="Salvar resenha">Salvar</button>
-            </footer>
-          </article>
-
-          <article class="card card-resenha">
-            <header class="resenha-topo">
-              <span class="avatar avatar-2" aria-hidden="true">JP</span>
-              <div class="resenha-autor">
-                <strong class="resenha-nome">João Pedro</strong>
-                <time class="resenha-tempo" datetime="2025-03-12T14:00">Há 1 hora</time>
-              </div>
-            </header>
-
-            <div class="resenha-corpo">
-              <figure class="capa-livro">
-                <div class="capa capa-3" role="img" aria-label="Capa do livro A Vida Invisível de Addie LaRue">
-                  <span class="capa-marca" aria-hidden="true">R</span>
-                  <strong class="capa-titulo">A Vida Invisível de Addie LaRue</strong>
-                  <small class="capa-autor">V. E. Schwab</small>
-                </div>
-              </figure>
-
-              <div class="resenha-info">
-                <p class="estrelas" aria-label="Avaliação: 4 de 5 estrelas">★★★★☆</p>
-                <h3 class="livro-titulo">A Vida Invisível de Addie LaRue</h3>
-                <p class="livro-autor">V. E. Schwab</p>
-                <blockquote class="resenha-texto">
-                  A premissa é maravilhosa e a atmosfera acompanha. Foi uma leitura lenta para mim, mas daquelas que
-                  continuam voltando à cabeça muitos dias depois.
-                </blockquote>
-              </div>
-            </div>
-
-            <footer class="resenha-rodape">
-              <button class="acao" type="button" aria-label="Curtir resenha">♡ 186</button>
-              <a class="acao" href="#comentarios-addie-larue">21 comentários</a>
-              <button class="acao acao-salvar" type="button" aria-label="Salvar resenha">Salvar</button>
-            </footer>
-          </article>
-
-          <article class="card card-resenha">
-            <header class="resenha-topo">
-              <span class="avatar avatar-3" aria-hidden="true">CN</span>
-              <div class="resenha-autor">
-                <strong class="resenha-nome">Clara Nunes</strong>
-                <time class="resenha-tempo" datetime="2025-03-12T13:00">Há 2 horas</time>
-              </div>
-              <span class="etiqueta">Em alta</span>
-            </header>
-
-            <div class="resenha-corpo">
-              <figure class="capa-livro">
-                <div class="capa capa-4" role="img" aria-label="Capa do livro Quarto de Despejo">
-                  <span class="capa-marca" aria-hidden="true">R</span>
-                  <strong class="capa-titulo">Quarto de Despejo</strong>
-                  <small class="capa-autor">Carolina Maria de Jesus</small>
-                </div>
-              </figure>
-
-              <div class="resenha-info">
-                <p class="estrelas" aria-label="Avaliação: 5 de 5 estrelas">★★★★★</p>
-                <h3 class="livro-titulo">Quarto de Despejo</h3>
-                <p class="livro-autor">Carolina Maria de Jesus</p>
-                <blockquote class="resenha-texto">
-                  Um livro indispensável. A voz de Carolina é direta, viva e impossível de ignorar. Terminei querendo
-                  conversar sobre cada página.
-                </blockquote>
-              </div>
-            </div>
-
-            <footer class="resenha-rodape">
-              <button class="acao" type="button" aria-label="Curtir resenha">♡ 312</button>
-              <a class="acao" href="#comentarios-quarto-de-despejo">47 comentários</a>
-              <button class="acao acao-salvar" type="button" aria-label="Salvar resenha">Salvar</button>
-            </footer>
-          </article>
+          <!-- Os cards são montados por renderizarFeed() em assets/js/inicio.js -->
+          <div id="feed-resenhas"></div>
         </section>
       </main>
     </div>
@@ -278,5 +172,11 @@
       </svg>
       Nova resenha
     </a>
+
+    <!-- A ordem importa: dados e utilitários primeiro, a página por último -->
+    <script src="assets/js/dados.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/inicio.js"></script>
   </body>
 </html>

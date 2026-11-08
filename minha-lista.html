@@ -109,127 +109,23 @@
         </header>
 
         <section class="lista-resumo" aria-label="Resumo da lista">
-          <strong class="resumo-numero">4</strong>
-          <span class="resumo-texto">livros para ler</span>
+          <strong class="resumo-numero" id="resumo-total">0</strong>
+          <span class="resumo-texto" id="resumo-texto">livros para ler</span>
           <p class="resumo-paginas">
-            <strong>1.864</strong>
-            páginas esperando por você
+            <strong id="resumo-paginas">0</strong>
+            <span id="resumo-paginas-texto">páginas esperando por você</span>
           </p>
         </section>
 
         <section class="estante" aria-labelledby="titulo-livros-salvos">
           <h2 id="titulo-livros-salvos" class="oculto">Livros salvos</h2>
 
-          <ol class="grade-estante">
-            <li>
-              <article class="card card-estante">
-                <span class="posicao" aria-hidden="true">01</span>
-                <figure class="capa-livro">
-                  <div class="capa capa-1" role="img" aria-label="Capa do livro Torto Arado">
-                    <span class="capa-marca" aria-hidden="true">R</span>
-                    <strong class="capa-titulo">Torto Arado</strong>
-                    <small class="capa-autor">Itamar Vieira Junior</small>
-                  </div>
-                </figure>
-                <div class="livro-info">
-                  <span class="genero">Literatura brasileira</span>
-                  <h3 class="livro-titulo">Torto Arado</h3>
-                  <p class="livro-autor">Itamar Vieira Junior</p>
-                  <p class="estrelas" aria-label="Avaliação média: 4,8 de 5 estrelas">
-                    ★★★★★
-                    <span class="nota-media">4,8</span>
-                  </p>
-                  <a class="link-forte" href="#livro-torto-arado">Começar a ler →</a>
-                </div>
-                <button class="botao-remover" type="button" aria-label="Remover Torto Arado da lista">
-                  <svg class="icone" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 6 12 12M18 6 6 18" />
-                  </svg>
-                </button>
-              </article>
-            </li>
-            <li>
-              <article class="card card-estante">
-                <span class="posicao" aria-hidden="true">02</span>
-                <figure class="capa-livro">
-                  <div class="capa capa-2" role="img" aria-label="Capa do livro Tudo é Rio">
-                    <span class="capa-marca" aria-hidden="true">R</span>
-                    <strong class="capa-titulo">Tudo é Rio</strong>
-                    <small class="capa-autor">Carla Madeira</small>
-                  </div>
-                </figure>
-                <div class="livro-info">
-                  <span class="genero">Literatura brasileira</span>
-                  <h3 class="livro-titulo">Tudo é Rio</h3>
-                  <p class="livro-autor">Carla Madeira</p>
-                  <p class="estrelas" aria-label="Avaliação média: 4,7 de 5 estrelas">
-                    ★★★★★
-                    <span class="nota-media">4,7</span>
-                  </p>
-                  <a class="link-forte" href="#livro-tudo-e-rio">Começar a ler →</a>
-                </div>
-                <button class="botao-remover" type="button" aria-label="Remover Tudo é Rio da lista">
-                  <svg class="icone" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 6 12 12M18 6 6 18" />
-                  </svg>
-                </button>
-              </article>
-            </li>
-            <li>
-              <article class="card card-estante">
-                <span class="posicao" aria-hidden="true">03</span>
-                <figure class="capa-livro">
-                  <div class="capa capa-4" role="img" aria-label="Capa do livro Quarto de Despejo">
-                    <span class="capa-marca" aria-hidden="true">R</span>
-                    <strong class="capa-titulo">Quarto de Despejo</strong>
-                    <small class="capa-autor">Carolina Maria de Jesus</small>
-                  </div>
-                </figure>
-                <div class="livro-info">
-                  <span class="genero">Literatura brasileira</span>
-                  <h3 class="livro-titulo">Quarto de Despejo</h3>
-                  <p class="livro-autor">Carolina Maria de Jesus</p>
-                  <p class="estrelas" aria-label="Avaliação média: 4,9 de 5 estrelas">
-                    ★★★★★
-                    <span class="nota-media">4,9</span>
-                  </p>
-                  <a class="link-forte" href="#livro-quarto-de-despejo">Começar a ler →</a>
-                </div>
-                <button class="botao-remover" type="button" aria-label="Remover Quarto de Despejo da lista">
-                  <svg class="icone" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 6 12 12M18 6 6 18" />
-                  </svg>
-                </button>
-              </article>
-            </li>
-            <li>
-              <article class="card card-estante">
-                <span class="posicao" aria-hidden="true">04</span>
-                <figure class="capa-livro">
-                  <div class="capa capa-6" role="img" aria-label="Capa do livro Cem Anos de Solidão">
-                    <span class="capa-marca" aria-hidden="true">R</span>
-                    <strong class="capa-titulo">Cem Anos de Solidão</strong>
-                    <small class="capa-autor">Gabriel García Márquez</small>
-                  </div>
-                </figure>
-                <div class="livro-info">
-                  <span class="genero">Literatura estrangeira</span>
-                  <h3 class="livro-titulo">Cem Anos de Solidão</h3>
-                  <p class="livro-autor">Gabriel García Márquez</p>
-                  <p class="estrelas" aria-label="Avaliação média: 4,9 de 5 estrelas">
-                    ★★★★★
-                    <span class="nota-media">4,9</span>
-                  </p>
-                  <a class="link-forte" href="#livro-cem-anos-de-solidao">Começar a ler →</a>
-                </div>
-                <button class="botao-remover" type="button" aria-label="Remover Cem Anos de Solidão da lista">
-                  <svg class="icone" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 6 12 12M18 6 6 18" />
-                  </svg>
-                </button>
-              </article>
-            </li>
-          </ol>
+          <!-- Os cards são montados por renderizarLista() em assets/js/minha-lista.js -->
+          <ol class="grade-estante" id="grade-estante"></ol>
+          <p class="lista-vazia" id="lista-vazia" hidden>
+            Sua lista está vazia.
+            <a class="link-forte" href="pesquisar.html">Encontrar um livro →</a>
+          </p>
         </section>
       </main>
     </div>
@@ -263,5 +159,11 @@
         <span>Avaliações</span>
       </a>
     </nav>
+
+    <!-- A ordem importa: dados e utilitários primeiro, a página por último -->
+    <script src="assets/js/dados.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/minha-lista.js"></script>
   </body>
 </html>
