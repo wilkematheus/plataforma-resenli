@@ -27,4 +27,4 @@
      - restrinja a chave só à "Books API"
    ========================================================== */
 
-const GOOGLE_BOOKS_CHAVE = "";
+const GOOGLE_BOOKS_CHAVE = "AIzaSyCPFs0A7uc8vOw6rPgmfKpxG5K4t4JYenE";
