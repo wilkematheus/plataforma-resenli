@@ -361,6 +361,16 @@ function configurarEventosPesquisa() {
     });
   }
 
+  // O ícone de pesquisa do topo leva o cursor ao campo (nesta página ele só recarregava a página)
+  const iconeDoTopo = document.querySelector('.topo-acoes a[href="#campo-pesquisa"]');
+  if (iconeDoTopo) {
+    iconeDoTopo.addEventListener("click", (evento) => {
+      evento.preventDefault();
+      campo.scrollIntoView({ block: "center" });
+      campo.focus();
+    });
+  }
+
   elementoGoogle("google-mais").addEventListener("click", () => buscarNoGoogle(googleTermo, true));
   elementoGoogle("google-tentar").addEventListener("click", () => {
     buscarNoGoogle(googleTermo || campo.value, googleUltimoFoiMais && googleLivros.length > 0);

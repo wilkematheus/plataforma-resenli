@@ -350,34 +350,47 @@ button {
   justify-content: flex-end;
   width: 100%;
   aspect-ratio: 2 / 3;
-  padding: 10px;
+  padding: clamp(5px, 9cqw, 10px);
   overflow: hidden;
   border-radius: 3px 7px 7px 3px;
+  /* As unidades "cqw" abaixo medem a largura desta capa: o texto encolhe junto com ela */
+  container-type: inline-size;
   box-shadow: -3px 4px 10px rgba(28, 32, 29, 0.18);
 }
 
 .capa-marca {
   position: absolute;
-  top: 9px;
-  right: 10px;
+  top: clamp(4px, 8cqw, 9px);
+  right: clamp(5px, 9cqw, 10px);
   font-family: var(--serifa);
-  font-size: 14px;
+  font-size: clamp(8px, 14cqw, 14px);
   font-style: italic;
   opacity: 0.7;
 }
 
 .capa-titulo {
   font-family: var(--serifa);
-  font-size: 14px;
+  font-size: clamp(9px, 15cqw, 22px);
   font-weight: 400;
   line-height: 1.1;
+  overflow-wrap: anywhere;
+  /* Títulos muito longos são cortados com "…" em vez de estourar a capa */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
 }
 
 .capa-autor {
   margin-top: 4px;
-  font-size: 7px;
+  font-size: clamp(5px, 7cqw, 8px);
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .capa-1 {
@@ -1250,7 +1263,7 @@ button {
   }
 
   .topo-titulo-desktop,
-  .topo-acoes > :not(.botao-tema) {
+  .topo-acoes > :not(.botao-tema):not(.menu-perfil) {
     display: none;
   }
 
@@ -2201,4 +2214,108 @@ html[data-tema="escuro"] .janela-formulario::backdrop {
 .resultado-info small {
   color: var(--cinza);
   font-size: 12px;
+}
+
+
+/* ---------- 21. CORREÇÕES E AÇÕES NOVAS ---------- */
+
+/* Botões Editar/Excluir dentro da janela de detalhes */
+.detalhes-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+/* Botão de contorno em cor de alerta (Excluir) */
+.botao-contorno.botao-perigo {
+  border-color: var(--ferrugem);
+}
+
+.botao-contorno.botao-perigo:hover {
+  background-color: var(--ferrugem);
+  color: #ffffff;
+}
+
+
+/* Menu da conta (avatar do topo): o botão é o próprio avatar */
+.menu-perfil {
+  position: relative;
+}
+
+.menu-perfil-botao {
+  border: none;
+  cursor: pointer;
+}
+
+.menu-perfil-botao:hover {
+  filter: brightness(0.95);
+}
+
+.menu-perfil-painel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 80;
+  min-width: 230px;
+  padding: 8px;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  background-color: var(--cartao);
+  box-shadow: 0 14px 36px rgba(15, 28, 21, 0.18);
+}
+
+.menu-perfil-painel[hidden] {
+  display: none;
+}
+
+.menu-perfil-quem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+  padding: 10px 12px 12px;
+  border-bottom: 1px solid var(--linha);
+  line-height: 1.3;
+}
+
+.menu-perfil-quem small {
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.menu-perfil-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--tinta);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.menu-perfil-item:hover,
+.menu-perfil-item:focus-visible {
+  background-color: var(--creme);
+}
+
+
+/* Botão com cara de link (ex.: "Ver todas →" no Início) */
+.botao-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--verde-texto);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.botao-link:hover {
+  text-decoration: underline;
+}
+
+.botao-link[hidden] {
+  display: none;
 }

@@ -79,3 +79,20 @@ function criarBotaoTema() {
 // Roda já, no <head>
 document.documentElement.dataset.tema = lerTemaSalvo() || temaDoSistema();
 document.addEventListener("DOMContentLoaded", criarBotaoTema);
+
+// Sem escolha salva, a página acompanha o tema do sistema se ele mudar com ela aberta
+// (antes só valia na hora de abrir a página)
+if (window.matchMedia) {
+  const consultaDoSistema = window.matchMedia("(prefers-color-scheme: dark)");
+  const acompanharSistema = () => {
+    if (!lerTemaSalvo()) {
+      aplicarTema(temaDoSistema());
+    }
+  };
+
+  if (typeof consultaDoSistema.addEventListener === "function") {
+    consultaDoSistema.addEventListener("change", acompanharSistema);
+  } else if (typeof consultaDoSistema.addListener === "function") {
+    consultaDoSistema.addListener(acompanharSistema);
+  }
+}

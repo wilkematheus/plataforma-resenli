@@ -4,87 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nova resenha | Resenli</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <script src="assets/js/tema.js"></script>
+    <!-- Esta página existia antes do formulário em janela e não salvava nada.
+         Quem ainda tiver o endereço antigo é levado ao formulário de verdade. -->
+    <meta http-equiv="refresh" content="0; url=minhas-avaliacoes.html?nova=1" />
   </head>
   <body class="pagina-janela">
     <main class="janela-fundo">
-      <section class="card janela" aria-labelledby="titulo-nova-resenha">
-        <header class="janela-cabecalho">
-          <div>
-            <p class="sobretitulo">Compartilhe sua leitura</p>
-            <h1 id="titulo-nova-resenha" class="titulo-medio">Nova resenha</h1>
-          </div>
-          <a class="botao-icone" href="inicio.html" aria-label="Fechar e voltar ao início">
-            <svg class="icone" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m6 6 12 12M18 6 6 18" />
-            </svg>
-          </a>
-        </header>
-
-        <form class="formulario" action="minhas-avaliacoes.html" method="get">
-          <div class="campo">
-            <label class="campo-rotulo" for="livro-avaliado">Qual livro você leu?</label>
-            <select class="campo-entrada" id="livro-avaliado" name="livro" required>
-              <option value="">Selecione um livro</option>
-              <option value="torto-arado">Torto Arado — Itamar Vieira Junior</option>
-              <option value="tudo-e-rio">Tudo é Rio — Carla Madeira</option>
-              <option value="addie-larue">A Vida Invisível de Addie LaRue — V. E. Schwab</option>
-              <option value="quarto-de-despejo">Quarto de Despejo — Carolina Maria de Jesus</option>
-              <option value="avesso-da-pele">O Avesso da Pele — Jeferson Tenório</option>
-              <option value="cem-anos-de-solidao">Cem Anos de Solidão — Gabriel García Márquez</option>
-            </select>
-          </div>
-
-          <fieldset class="notas">
-            <legend class="campo-rotulo">Como foi sua experiência?</legend>
-            <label class="nota">
-              <input class="nota-opcao" type="radio" name="nota" value="1" required />
-              ★
-              <span class="oculto">1 estrela</span>
-            </label>
-            <label class="nota">
-              <input class="nota-opcao" type="radio" name="nota" value="2" />
-              ★★
-              <span class="oculto">2 estrelas</span>
-            </label>
-            <label class="nota">
-              <input class="nota-opcao" type="radio" name="nota" value="3" />
-              ★★★
-              <span class="oculto">3 estrelas</span>
-            </label>
-            <label class="nota">
-              <input class="nota-opcao" type="radio" name="nota" value="4" />
-              ★★★★
-              <span class="oculto">4 estrelas</span>
-            </label>
-            <label class="nota">
-              <input class="nota-opcao" type="radio" name="nota" value="5" />
-              ★★★★★
-              <span class="oculto">5 estrelas</span>
-            </label>
-          </fieldset>
-
-          <div class="campo">
-            <label class="campo-rotulo" for="comentario-resenha">Conte um pouco mais</label>
-            <textarea
-              class="campo-entrada campo-texto"
-              id="comentario-resenha"
-              name="comentario"
-              rows="6"
-              maxlength="420"
-              placeholder="O que te atravessou nessa leitura?"
-              required
-            ></textarea>
-            <small class="contador">Máximo de 420 caracteres</small>
-          </div>
-
-          <div class="form-acoes">
-            <a class="botao botao-secundario" href="inicio.html">Cancelar</a>
-            <button class="botao botao-primario" type="submit">Publicar resenha →</button>
-          </div>
-        </form>
-      </section>
+      <p class="card janela">
+        Levando você para o formulário de nova resenha…
+        <a class="link-forte" href="minhas-avaliacoes.html?nova=1">Clique aqui se nada acontecer</a>
+      </p>
     </main>
   </body>
 </html>

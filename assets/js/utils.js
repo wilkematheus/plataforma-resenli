@@ -73,9 +73,16 @@ function normalizarTexto(texto) {
 
 // "Matheus Wilke" → "MW" (primeira letra do primeiro e do último nome)
 function gerarIniciais(nome) {
-  const partes = nome.trim().split(/\s+/);
-  const primeira = partes[0][0];
-  const ultima = partes.length > 1 ? partes[partes.length - 1][0] : "";
+  const partes = String(nome).trim().split(/\s+/).filter(Boolean);
+
+  // Nome vazio: antes virava a palavra "UNDEFINED"
+  if (partes.length === 0) {
+    return "?";
+  }
+
+  // Array.from separa por letra de verdade (um emoji ou letra rara não vira meio caractere)
+  const primeira = Array.from(partes[0])[0];
+  const ultima = partes.length > 1 ? Array.from(partes[partes.length - 1])[0] : "";
 
   return (primeira + ultima).toUpperCase();
 }
@@ -127,8 +134,13 @@ function formatarDecimal(numero) {
   return numero.toFixed(1).replace(".", ",");
 }
 
-// 1864 → "1.864" | 12400 → "12,4 mil"
+// 1864 → "1.864" | 12400 → "12,4 mil" | 1500000 → "1,5 mi"
 function formatarMilhar(numero) {
+  const emMil = Math.round(numero / 100) / 10; // arredondado em 1 casa: 999.950 já conta como 1.000 mil
+
+  if (emMil >= 1000) {
+    return `${formatarDecimal(numero / 1000000).replace(",0", "")} mi`;
+  }
   if (numero >= 10000) {
     return `${formatarDecimal(numero / 1000).replace(",0", "")} mil`;
   }

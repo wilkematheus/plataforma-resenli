@@ -272,10 +272,45 @@ function visualizarResenha(id) {
       </dl>
     </div>
     <blockquote class="resenha-texto detalhes-texto">“${escaparHTML(resenha.texto)}”</blockquote>
+    <div class="detalhes-acoes" data-id="${resenha.id}">
+      <button class="botao botao-contorno botao-perigo" type="button" data-acao-detalhes="excluir">Excluir</button>
+      <button class="botao botao-primario" type="button" data-acao-detalhes="editar">Editar</button>
+    </div>
   `;
 
   // showModal() deixa o resto da página inacessível até fechar
   document.getElementById("janela-detalhes").showModal();
+}
+
+// Editar ou excluir direto da janela de detalhes
+function tratarCliqueDetalhes(evento) {
+  const botao = evento.target.closest("[data-acao-detalhes]");
+  if (!botao) {
+    return;
+  }
+
+  const id = botao.closest("[data-id]").dataset.id;
+
+  // A janela fecha antes: o formulário (ou o aviso "Desfazer") não pode ficar atrás dela
+  fecharDetalhes();
+
+  if (botao.dataset.acaoDetalhes === "editar") {
+    editarResenha(id);
+  } else {
+    excluirResenha(id);
+  }
+}
+
+// O clique foi no fundo escuro (fora da caixa da janela)? O próprio <dialog> também é o "alvo"
+// de cliques na margem interna dele; por isso só o alvo não basta: compara com a posição do clique.
+function cliqueForaDaJanela(evento, janela) {
+  if (evento.target !== janela) {
+    return false;
+  }
+
+  const caixa = janela.getBoundingClientRect();
+
+  return evento.clientX < caixa.left || evento.clientX > caixa.right || evento.clientY < caixa.top || evento.clientY > caixa.bottom;
 }
 
 // Fecha a janela de detalhes (o navegador devolve o foco ao botão que a abriu)
@@ -898,10 +933,11 @@ function configurarEventos() {
   const janelaDetalhes = document.getElementById("janela-detalhes");
   document.getElementById("fechar-detalhes").addEventListener("click", fecharDetalhes);
   janelaDetalhes.addEventListener("click", (evento) => {
-    if (evento.target === janelaDetalhes) {
+    if (cliqueForaDaJanela(evento, janelaDetalhes)) {
       fecharDetalhes();
     }
   });
+  document.getElementById("detalhes-conteudo").addEventListener("click", tratarCliqueDetalhes);
 
   // Botões "Nova resenha" e "+ Avaliar um livro": abrem a janela em vez de trocar de página
   for (const botao of document.querySelectorAll("[data-abrir-formulario]")) {
@@ -972,14 +1008,22 @@ function iniciar() {
 function abrirFormularioDaURL() {
   const endereco = new URL(window.location.href);
   const livroId = endereco.searchParams.get("avaliar");
+  const novaResenha = endereco.searchParams.get("nova") !== null;
 
-  if (!livroId) {
+  if (!livroId && !novaResenha) {
     return;
   }
 
-  // Limpa o parâmetro para um recarregamento não abrir o formulário de novo
+  // Limpa os parâmetros para um recarregamento não abrir o formulário de novo
   endereco.searchParams.delete("avaliar");
+  endereco.searchParams.delete("nova");
   history.replaceState(null, "", endereco);
+
+  // ?nova=1: formulário em branco (é o que os botões "Nova resenha" das outras páginas abrem)
+  if (!livroId) {
+    abrirFormulario();
+    return;
+  }
 
   const livro = buscarLivro(livroId);
   if (!livro) {

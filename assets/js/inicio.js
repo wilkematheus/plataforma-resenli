@@ -9,6 +9,13 @@
 // Resenhas exibidas no feed (montadas em montarFeed())
 let feed = [];
 
+// Quantas resenhas aparecem em destaque antes de "Ver todas"
+const RESENHAS_EM_DESTAQUE = 3;
+
+// Aba aberta ("todas" ou "salvas") e se o feed está expandido
+let abaFeed = "todas";
+let feedCompleto = false;
+
 // Dá um id único a cada comentário novo
 let contadorComentarios = 0;
 
@@ -201,17 +208,62 @@ function criarCardFeed(item) {
 // Monta todos os cards do feed na tela
 function renderizarFeed() {
   const container = document.getElementById("feed-resenhas");
+  const daAba = resenhasDaAba();
 
-  if (feed.length === 0) {
-    container.innerHTML = '<p class="lista-vazia">Ainda não há resenhas por aqui.</p>';
-    return;
+  // Em "Todas" só as primeiras ficam em destaque, até a pessoa pedir "Ver todas"
+  const visiveis = feedCompleto ? daAba : daAba.slice(0, RESENHAS_EM_DESTAQUE);
+
+  if (visiveis.length === 0) {
+    container.innerHTML =
+      abaFeed === "salvas"
+        ? '<p class="lista-vazia">Você ainda não salvou nenhuma resenha. Use o botão “Salvar” nas resenhas.</p>'
+        : '<p class="lista-vazia">Ainda não há resenhas por aqui.</p>';
+  } else {
+    let html = "";
+    for (const item of visiveis) {
+      html += criarCardFeed(item);
+    }
+    container.innerHTML = html;
   }
 
-  let html = "";
-  for (const item of feed) {
-    html += criarCardFeed(item);
+  atualizarControlesDoFeed();
+}
+
+// As resenhas da aba aberta ("Todas" ou só as que a pessoa salvou)
+function resenhasDaAba() {
+  return abaFeed === "salvas" ? feed.filter((item) => item.salvo) : feed;
+}
+
+// Contadores das abas e o botão "Ver todas →" / "Mostrar menos"
+function atualizarControlesDoFeed() {
+  const total = resenhasDaAba().length;
+
+  for (const aba of document.querySelectorAll("[data-aba-feed]")) {
+    const nome = aba.dataset.abaFeed;
+
+    aba.setAttribute("aria-pressed", nome === abaFeed);
+    aba.querySelector(".aba-contador").textContent = nome === "salvas" ? feed.filter((item) => item.salvo).length : feed.length;
   }
-  container.innerHTML = html;
+
+  // Sem resenhas escondidas não há o que expandir
+  const botao = document.getElementById("feed-ver-todas");
+  botao.hidden = total <= RESENHAS_EM_DESTAQUE;
+  botao.setAttribute("aria-expanded", feedCompleto);
+  botao.textContent = feedCompleto ? "Mostrar menos" : `Ver todas (${total}) →`;
+}
+
+function mudarAbaDoFeed(nome) {
+  abaFeed = nome;
+  feedCompleto = false;
+
+  renderizarFeed();
+}
+
+// "Ver todas →" ↔ "Mostrar menos"
+function alternarFeedCompleto() {
+  feedCompleto = !feedCompleto;
+
+  renderizarFeed();
 }
 
 
@@ -253,7 +305,15 @@ function salvarResenha(item) {
   alternarNaLista(interacoes.salvos, item.id, item.salvo);
   salvarDados();
 
-  atualizarCardFeed(item, "salvar");
+  if (abaFeed === "salvas" && !item.salvo) {
+    // Na aba "Salvas", tirar dos salvos faz o card sair da lista: o foco vai para a aba
+    renderizarFeed();
+    document.querySelector('[data-aba-feed="salvas"]').focus();
+  } else {
+    atualizarCardFeed(item, "salvar");
+    atualizarControlesDoFeed();
+  }
+
   mostrarAviso(item.salvo ? "Resenha salva." : "Resenha removida dos salvos.");
 }
 
@@ -375,6 +435,11 @@ function iniciarInicio() {
     montarFeed();
     renderizarFeed();
   });
+
+  document.getElementById("feed-ver-todas").addEventListener("click", alternarFeedCompleto);
+  for (const aba of document.querySelectorAll("[data-aba-feed]")) {
+    aba.addEventListener("click", () => mudarAbaDoFeed(aba.dataset.abaFeed));
+  }
 
   document.getElementById("feed-resenhas").addEventListener("click", tratarCliqueFeed);
   document.getElementById("feed-resenhas").addEventListener("submit", tratarEnvioFeed);
